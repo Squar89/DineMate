@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_recommend">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/dish_name"
         android:layout_width="209dp"
         android:layout_height="62dp"
         android:layout_marginBottom="16dp"
@@ -20,52 +20,56 @@
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintBottom_toTopOf="@+id/dish_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/save_button"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:onClick="saveAction"
         android:text="@string/save_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/dish_image" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/yay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:onClick="yayAction"
         android:text="@string/yay_button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button7"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/save_button"
+        app:layout_constraintEnd_toStartOf="@+id/save_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/nay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:onClick="nayAction"
         android:text="@string/nay_button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/save_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button7" />
+        app:layout_constraintStart_toEndOf="@+id/save_button" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/dish_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:contentDescription="@string/dish_image"
+        android:onClick="showRecipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

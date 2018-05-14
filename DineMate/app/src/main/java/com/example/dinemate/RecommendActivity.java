@@ -1,5 +1,6 @@
 package com.example.dinemate;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,10 @@ import android.view.MenuItem;
 
 public class RecommendActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    /* TODO
+        probably some stuff there, like current recipe, current user etc.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,15 @@ public class RecommendActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /* TODO prepare recipe
+            declaration will possibly be somewhere else
+            private PrepareRecipe getRecipe = null
+
+            getRecipe = new PrepareRecipe(userId);
+            getRecipe.execute();
+            updateRecipe();//it might be done in PrepareRecipe onPostExecute, dunno
+        */
     }
 
     @Override
@@ -87,5 +101,58 @@ public class RecommendActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void yayAction(View view) {
+        // TODO Do something when yay button is clicked
+    }
+
+    public void nayAction(View view) {
+        // TODO Do something when nay button is clicked
+    }
+
+    public void saveAction(View view) {
+        // TODO Do something when save button is clicked
+    }
+
+    public void showRecipe(View view) {
+        // TODO Show detailed recipe when image is clicked
+    }
+
+    public void updateRecipe() {
+        // TODO Update shown recipe and all dependencies
+    }
+
+    /* Asynchronized task used to download a new recipe */
+    public class PrepareRecipe extends AsyncTask<Void, Void, Boolean> {
+
+        private final int mUserId;
+
+        PrepareRecipe(int userId) {
+            mUserId = userId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO
+            /* This is where we want to download recipe */
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                // TODO
+                // ?updateRecipe()?
+            } else {
+                // TODO
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            // TODO
+        }
     }
 }
