@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="apache">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/commons-codec-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/fluent-hc-4.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/httpclient-4.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/httpclient-cache-4.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/httpclient-win-4.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/httpcore-4.4.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/httpmime-4.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/jna-4.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/apache/jna-platform-4.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
