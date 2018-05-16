@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="aopalliance-repackaged-2.5.0-b42">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/aopalliance-repackaged-2.5.0-b42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/cdi-api-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/el-api-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/hk2-api-2.5.0-b42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/hk2-locator-2.5.0-b42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/hk2-utils-2.5.0-b42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javassist-3.22.0-CR2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.annotation-api-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.inject-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.inject-2.5.0-b42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.json.bind-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.json-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.json-api-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/javax.servlet-api-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/jaxb-api-2.2.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/jsr250-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/osgi-resource-locator-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/persistence-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/validation-api-1.1.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/yasson-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/org.osgi.core-4.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/ext/org.osgi.core-4.2.0.jar!/OSGI-OPT/src" />
+    </SOURCES>
+  </library>
+</component>

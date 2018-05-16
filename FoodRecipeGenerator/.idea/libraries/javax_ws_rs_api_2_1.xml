@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javax.ws.rs-api-2.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.idea/libs/jaxrs-ri/api/javax.ws.rs-api-2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
