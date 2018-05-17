@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS loggings
 CREATE TABLE IF NOT EXISTS dishes
 (
   dish_id INTEGER PRIMARY KEY,
-  description TEXT
+  description TEXT,
+  name  VARCHAR(30),
+  ingredients_list VARCHAR(30),
+  directions VARCHAR(30)
 );
 
 CREATE TABLE IF NOT EXISTS ratings
