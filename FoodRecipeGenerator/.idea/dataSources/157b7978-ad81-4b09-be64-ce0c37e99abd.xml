@@ -7076,7 +7076,6 @@
     <role id="1944" parent="1" name="guyhiqietpmzvp">
       <ObjectId>54213902</ObjectId>
       <Inherit>1</Inherit>
-      <CanLogin>1</CanLogin>
       <ConnectionLimit>20</ConnectionLimit>
     </role>
     <role id="1945" parent="1" name="gvbkqtlqaiuxjd">
@@ -13486,7 +13485,6 @@
     <role id="3023" parent="1" name="zdsoylsjrsouki">
       <ObjectId>5788343</ObjectId>
       <Inherit>1</Inherit>
-      <CanLogin>1</CanLogin>
       <ConnectionLimit>20</ConnectionLimit>
     </role>
     <role id="3024" parent="1" name="zeakqvfjggyzhf">
@@ -13721,8 +13719,8 @@
     <schema id="3065" parent="1300" name="public">
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
-      <IntrospectionTimestamp>2018-05-21.13:36:35.655</IntrospectionTimestamp>
-      <IntrospectionStateNumber>105835809</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2018-05-21.20:05:49.874</IntrospectionTimestamp>
+      <IntrospectionStateNumber>106301263</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -13769,194 +13767,200 @@
       <Type>index</Type>
     </access-method>
     <table id="3072" parent="3065" name="dishes">
-      <ObjectId>56665025</ObjectId>
-      <StateNumber>105835805</StateNumber>
+      <ObjectId>62008639</ObjectId>
+      <StateNumber>106301263</StateNumber>
     </table>
     <table id="3073" parent="3065" name="loggings">
-      <ObjectId>56665017</ObjectId>
-      <StateNumber>98766593</StateNumber>
+      <ObjectId>62008631</ObjectId>
+      <StateNumber>106301261</StateNumber>
     </table>
     <table id="3074" parent="3065" name="ratings">
-      <ObjectId>56665033</ObjectId>
-      <StateNumber>98766604</StateNumber>
+      <ObjectId>62008647</ObjectId>
+      <StateNumber>106301263</StateNumber>
     </table>
     <table id="3075" parent="3065" name="users">
-      <ObjectId>56665010</ObjectId>
-      <StateNumber>98766604</StateNumber>
+      <ObjectId>62008624</ObjectId>
+      <StateNumber>106301263</StateNumber>
     </table>
     <column id="3076" parent="3072" name="dish_id">
       <Position>1</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766600</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>106301262</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
     <column id="3077" parent="3072" name="name">
-      <Position>3</Position>
+      <Position>2</Position>
       <DataType>text|0s</DataType>
-      <StateNumber>105831331</StateNumber>
+      <StateNumber>106301262</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="3078" parent="3072" name="ingredients">
-      <Position>4</Position>
+      <Position>3</Position>
       <DataType>text|0s</DataType>
-      <StateNumber>105835809</StateNumber>
+      <StateNumber>106301262</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="3079" parent="3072" name="directions">
-      <Position>5</Position>
+      <Position>4</Position>
       <DataType>text|0s</DataType>
-      <StateNumber>105831334</StateNumber>
+      <StateNumber>106301262</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="3080" parent="3072" name="image_url">
-      <Position>6</Position>
+      <Position>5</Position>
       <DataType>text|0s</DataType>
-      <StateNumber>105835805</StateNumber>
+      <StateNumber>106301262</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <index id="3081" parent="3072" name="dishes_pkey">
-      <ObjectId>56665031</ObjectId>
+    <column id="3081" parent="3072" name="publisher_url">
+      <Position>6</Position>
+      <DataType>text|0s</DataType>
+      <StateNumber>106301262</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <index id="3082" parent="3072" name="dishes_pkey">
+      <ObjectId>62008645</ObjectId>
       <ColNames>dish_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="3082" parent="3072" name="dishes_pkey">
-      <ObjectId>56665032</ObjectId>
+    <key id="3083" parent="3072" name="dishes_pkey">
+      <ObjectId>62008646</ObjectId>
       <ColNames>dish_id</ColNames>
       <UnderlyingIndexName>dishes_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="3083" parent="3073" name="user_id">
+    <column id="3084" parent="3073" name="user_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>98766593</StateNumber>
+      <StateNumber>106301261</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="3084" parent="3073" name="date">
+    <column id="3085" parent="3073" name="date">
       <Position>2</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766593</StateNumber>
+      <StateNumber>106301261</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <foreign-key id="3085" parent="3073" name="loggings_user_id_fkey">
-      <ObjectId>56665020</ObjectId>
+    <foreign-key id="3086" parent="3073" name="loggings_user_id_fkey">
+      <ObjectId>62008634</ObjectId>
       <ColNames>user_id</ColNames>
-      <RefTableId>56665010</RefTableId>
+      <RefTableId>62008624</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>users</RefTableName>
       <RefKeyName>users_pkey</RefKeyName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="3086" parent="3074" name="user_id">
+    <column id="3087" parent="3074" name="user_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766604</StateNumber>
+      <StateNumber>106301263</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="3087" parent="3074" name="dish_id">
+    <column id="3088" parent="3074" name="dish_id">
       <Position>2</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766604</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>106301263</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <column id="3088" parent="3074" name="rate">
+    <column id="3089" parent="3074" name="rate">
       <Position>3</Position>
       <DataType>numeric|0s</DataType>
-      <StateNumber>98766604</StateNumber>
+      <StateNumber>106301263</StateNumber>
       <TypeId>1700</TypeId>
     </column>
-    <column id="3089" parent="3074" name="date">
+    <column id="3090" parent="3074" name="date">
       <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766604</StateNumber>
+      <StateNumber>106301263</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="3090" parent="3074" name="ratings_pkey">
-      <ObjectId>56665040</ObjectId>
+    <index id="3091" parent="3074" name="ratings_pkey">
+      <ObjectId>62008654</ObjectId>
       <ColNames>user_id
 dish_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="3091" parent="3074" name="ratings_pkey">
-      <ObjectId>56665041</ObjectId>
+    <key id="3092" parent="3074" name="ratings_pkey">
+      <ObjectId>62008655</ObjectId>
       <ColNames>user_id
 dish_id</ColNames>
       <UnderlyingIndexName>ratings_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="3092" parent="3074" name="ratings_user_id_fkey">
-      <ObjectId>56665042</ObjectId>
+    <foreign-key id="3093" parent="3074" name="ratings_user_id_fkey">
+      <ObjectId>62008656</ObjectId>
       <ColNames>user_id</ColNames>
-      <RefTableId>56665010</RefTableId>
+      <RefTableId>62008624</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>users</RefTableName>
       <RefKeyName>users_pkey</RefKeyName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <foreign-key id="3093" parent="3074" name="ratings_dish_id_fkey">
-      <ObjectId>56665047</ObjectId>
+    <foreign-key id="3094" parent="3074" name="ratings_dish_id_fkey">
+      <ObjectId>62008661</ObjectId>
       <ColNames>dish_id</ColNames>
-      <RefTableId>56665025</RefTableId>
+      <RefTableId>62008639</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>dishes</RefTableName>
       <RefKeyName>dishes_pkey</RefKeyName>
       <RefColNames>dish_id</RefColNames>
     </foreign-key>
-    <check id="3094" parent="3074" name="ratings_rate_check">
-      <ObjectId>56665036</ObjectId>
+    <check id="3095" parent="3074" name="ratings_rate_check">
+      <ObjectId>62008650</ObjectId>
       <ColNames>rate</ColNames>
       <Predicate>(rate &gt; (0)::numeric) AND (rate &lt; (6)::numeric)</Predicate>
     </check>
-    <column id="3095" parent="3075" name="user_id">
+    <column id="3096" parent="3075" name="user_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766592</StateNumber>
+      <StateNumber>106301258</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="3096" parent="3075" name="login">
+    <column id="3097" parent="3075" name="login">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766592</StateNumber>
+      <StateNumber>106301258</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="3097" parent="3075" name="password_hash">
+    <column id="3098" parent="3075" name="password_hash">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766592</StateNumber>
+      <StateNumber>106301258</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="3098" parent="3075" name="date_of_registration">
+    <column id="3099" parent="3075" name="date_of_registration">
       <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>98766592</StateNumber>
+      <StateNumber>106301258</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="3099" parent="3075" name="users_pkey">
-      <ObjectId>56665013</ObjectId>
+    <index id="3100" parent="3075" name="users_pkey">
+      <ObjectId>62008627</ObjectId>
       <ColNames>user_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="3100" parent="3075" name="users_login_key">
-      <ObjectId>56665015</ObjectId>
+    <index id="3101" parent="3075" name="users_login_key">
+      <ObjectId>62008629</ObjectId>
       <ColNames>login</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="3101" parent="3075" name="users_pkey">
-      <ObjectId>56665014</ObjectId>
+    <key id="3102" parent="3075" name="users_pkey">
+      <ObjectId>62008628</ObjectId>
       <ColNames>user_id</ColNames>
       <UnderlyingIndexName>users_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="3102" parent="3075" name="users_login_key">
-      <ObjectId>56665016</ObjectId>
+    <key id="3103" parent="3075" name="users_login_key">
+      <ObjectId>62008630</ObjectId>
       <ColNames>login</ColNames>
       <UnderlyingIndexName>users_login_key</UnderlyingIndexName>
     </key>

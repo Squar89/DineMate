@@ -20,27 +20,28 @@ create table loggings
 
 create table dishes
 (
-  dish_id     integer not null
+  dish_id       varchar(10) not null
     constraint dishes_pkey
     primary key,
-  name        text,
-  ingredients text,
-  directions  text,
-  image_url   text
+  name          text,
+  ingredients   text,
+  directions    text,
+  image_url     text,
+  publisher_url text
 );
 
 create table ratings
 (
-  user_id integer   not null
+  user_id integer     not null
     constraint ratings_user_id_fkey
     references users,
-  dish_id integer   not null
+  dish_id varchar(10) not null
     constraint ratings_dish_id_fkey
     references dishes,
   rate    numeric
     constraint ratings_rate_check
     check ((rate > (0) :: numeric) AND (rate < (6) :: numeric)),
-  date    timestamp not null,
+  date    timestamp   not null,
   constraint ratings_pkey
   primary key (user_id, dish_id)
 );

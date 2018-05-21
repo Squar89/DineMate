@@ -11,9 +11,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class RestAPICaller
+class RestAPICaller
 {
-    String call(String url)
+    static String call(String url)
     {
         String result = "error";
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build())
