@@ -16,10 +16,9 @@ import android.view.MenuItem;
 
 public class RecommendActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    /* TODO
-        probably some stuff there, like current recipe, current user etc.
-     */
+    private int userId;
+    private int recipeId;
+    private PrepareRecipe getRecipe = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +47,7 @@ public class RecommendActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /* TODO prepare recipe
-            declaration will possibly be somewhere else
-            private PrepareRecipe getRecipe = null
-
-            getRecipe = new PrepareRecipe(userId);
-            getRecipe.execute();
-            updateRecipe();//it might be done in PrepareRecipe onPostExecute, dunno
-        */
+        prepareRecipe();
     }
 
     @Override
@@ -108,7 +100,7 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     public void nayAction(View view) {
-        // TODO Do something when nay button is clicked
+        prepareRecipe();
     }
 
     public void saveAction(View view) {
@@ -123,6 +115,11 @@ public class RecommendActivity extends AppCompatActivity
         // TODO Update shown recipe and all dependencies
     }
 
+    public void prepareRecipe() {
+        getRecipe = new PrepareRecipe(userId);
+        getRecipe.execute();
+    }
+
     /* Asynchronized task used to download a new recipe */
     public class PrepareRecipe extends AsyncTask<Void, Void, Boolean> {
 
@@ -134,8 +131,8 @@ public class RecommendActivity extends AppCompatActivity
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO
-            /* This is where we want to download recipe */
+            /* TODO */
+            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId */
 
             return false;
         }
@@ -143,16 +140,17 @@ public class RecommendActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                // TODO
-                // ?updateRecipe()?
+                updateRecipe();
             } else {
-                // TODO
+                /* TODO */
+                /* print some error */
             }
         }
 
         @Override
         protected void onCancelled() {
-            // TODO
+            /* TODO */
+            /* print same error as above */
         }
     }
 }
