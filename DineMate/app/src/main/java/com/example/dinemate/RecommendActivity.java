@@ -22,11 +22,8 @@ public class RecommendActivity extends AppCompatActivity
     private int userId;
     private int recipeId;
     private PrepareRecipe getRecipe = null;
-<<<<<<< HEAD
     private RatingBar ratingBar;
-=======
     private AppUtils utils = new AppUtils();
->>>>>>> 4955143a07cdce4eb4bccb350e8795621df20082
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
