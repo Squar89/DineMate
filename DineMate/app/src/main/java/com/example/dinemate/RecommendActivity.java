@@ -13,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 
 public class RecommendActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private int userId;
     private int recipeId;
     private PrepareRecipe getRecipe = null;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class RecommendActivity extends AppCompatActivity
             }
         });
         */
+        addListenerOnRatingBar();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,11 +99,19 @@ public class RecommendActivity extends AppCompatActivity
         return true;
     }
 
-    public void yayAction(View view) {
-        // TODO Do something when yay button is clicked
+    public void addListenerOnRatingBar() {
+
+        ratingBar = findViewById(R.id.rating);
+
+        ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                sendRating(rating);
+            }
+        });
     }
 
-    public void nayAction(View view) {
+    public void skipAction(View view) {
         prepareRecipe();
     }
 
@@ -118,6 +130,10 @@ public class RecommendActivity extends AppCompatActivity
     public void prepareRecipe() {
         getRecipe = new PrepareRecipe(userId);
         getRecipe.execute();
+    }
+
+    private void sendRating(float rating) {
+
     }
 
     /* Asynchronized task used to download a new recipe */
