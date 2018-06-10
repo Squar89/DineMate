@@ -1,5 +1,6 @@
 package com.example.dinemate;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +22,11 @@ public class RecommendActivity extends AppCompatActivity
     private int userId;
     private int recipeId;
     private PrepareRecipe getRecipe = null;
+<<<<<<< HEAD
     private RatingBar ratingBar;
+=======
+    private AppUtils utils = new AppUtils();
+>>>>>>> 4955143a07cdce4eb4bccb350e8795621df20082
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,16 @@ public class RecommendActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /* Authenticate User */
+        userId = getIntent().getIntExtra("userId", -1);
+        /* User was not authenticated, go back to login activity */
+        if (userId == -1) {
+            Intent authenticateAgain = new Intent(getApplicationContext(), LoginActivity.class);
+            finish();
+            startActivity(authenticateAgain);
+        }
+
 
         prepareRecipe();
     }
@@ -80,6 +95,9 @@ public class RecommendActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            //startActivity(settingsIntent); TODO
+
             return true;
         }
 
@@ -92,7 +110,7 @@ public class RecommendActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        /* TODO */
+        /* TODO populate drawer navigation */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -116,11 +134,15 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     public void saveAction(View view) {
-        // TODO Do something when save button is clicked
+        // TODO insert into database
     }
 
     public void showRecipe(View view) {
-        // TODO Show detailed recipe when image is clicked
+        Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetails.class);
+        showDetailsIntent.putExtra("userId", userId);
+        showDetailsIntent.putExtra("recipeId", recipeId);
+        // TODO put some more extras (whatever is necessary)
+        startActivity(showDetailsIntent);
     }
 
     public void updateRecipe() {
@@ -148,7 +170,7 @@ public class RecommendActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
             /* TODO */
-            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId */
+            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId, obrazek nazwe itd */
 
             return false;
         }
@@ -158,15 +180,13 @@ public class RecommendActivity extends AppCompatActivity
             if (success) {
                 updateRecipe();
             } else {
-                /* TODO */
-                /* print some error */
+                utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
             }
         }
 
         @Override
         protected void onCancelled() {
-            /* TODO */
-            /* print same error as above */
+            utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
         }
     }
 }
