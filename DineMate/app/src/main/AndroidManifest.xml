@@ -33,7 +33,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.example.dinemate.RecommendActivity" />
     </application>
 
 </manifest>

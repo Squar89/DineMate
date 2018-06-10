@@ -122,6 +122,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setupActionBar();
     }
 
+    public boolean onOptionsItemSelected(MenuItem item){
+        finish();
+        return true;
+    }
+
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
