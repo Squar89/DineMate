@@ -1,5 +1,6 @@
 package com.example.dinemate;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,12 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Context;
 
 public class RecommendActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private int userId;
     private int recipeId;
     private PrepareRecipe getRecipe = null;
+    private AppUtils utils = new AppUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,15 @@ public class RecommendActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /* Authenticate User */
+        userId = getIntent().getIntExtra("userId", -1);
+        /* User was not authenticated, go back to login activity */
+        if (userId == -1) {
+            Intent authenticateAgain = new Intent(getApplicationContext(), LoginActivity.class);
+            finish();
+            startActivity(authenticateAgain);
+        }
 
         prepareRecipe();
     }
@@ -132,7 +144,7 @@ public class RecommendActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
             /* TODO */
-            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId */
+            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId, obrazek nazwe itd */
 
             return false;
         }
@@ -142,15 +154,15 @@ public class RecommendActivity extends AppCompatActivity
             if (success) {
                 updateRecipe();
             } else {
+                utils.DisplayDialog(getApplicationContext(), "Error", "Couldn't prepare new recipe, try again later");
                 /* TODO */
-                /* print some error */
             }
         }
 
         @Override
         protected void onCancelled() {
+            utils.DisplayDialog(getApplicationContext(), "Error", "Couldn't prepare new recipe, try again later");
             /* TODO */
-            /* print same error as above */
         }
     }
 }

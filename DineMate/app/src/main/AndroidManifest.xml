@@ -26,6 +26,10 @@
         <activity
             android:name=".RecommendActivity"
             android:label="@string/title_activity_recommend"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RecipeDetails"
+            android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

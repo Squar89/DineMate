@@ -346,7 +346,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                /* TODO find out users id and pass it to next activity */
+
                 Intent succesfullLoginIntent = new Intent(getApplicationContext(), RecommendActivity.class);
+                succesfullLoginIntent.putExtra("userId", 1);//TODO change value
                 finish();
                 startActivity(succesfullLoginIntent);
             } else {
