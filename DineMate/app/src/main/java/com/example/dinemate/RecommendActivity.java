@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Context;
 
 public class RecommendActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,6 +88,9 @@ public class RecommendActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            //startActivity(settingsIntent); TODO
+
             return true;
         }
 
@@ -101,7 +103,7 @@ public class RecommendActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        /* TODO */
+        /* TODO populate drawer navigation */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -117,11 +119,15 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     public void saveAction(View view) {
-        // TODO Do something when save button is clicked
+        // TODO insert into database
     }
 
     public void showRecipe(View view) {
-        // TODO Show detailed recipe when image is clicked
+        Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetails.class);
+        showDetailsIntent.putExtra("userId", userId);
+        showDetailsIntent.putExtra("recipeId", recipeId);
+        // TODO put some more extras (whatever is necessary)
+        startActivity(showDetailsIntent);
     }
 
     public void updateRecipe() {
@@ -156,14 +162,12 @@ public class RecommendActivity extends AppCompatActivity
                 updateRecipe();
             } else {
                 utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
-                /* TODO */
             }
         }
 
         @Override
         protected void onCancelled() {
             utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
-            /* TODO */
         }
     }
 }
