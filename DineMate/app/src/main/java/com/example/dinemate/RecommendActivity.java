@@ -59,6 +59,7 @@ public class RecommendActivity extends AppCompatActivity
             startActivity(authenticateAgain);
         }
 
+
         prepareRecipe();
     }
 
@@ -154,14 +155,14 @@ public class RecommendActivity extends AppCompatActivity
             if (success) {
                 updateRecipe();
             } else {
-                utils.DisplayDialog(getApplicationContext(), "Error", "Couldn't prepare new recipe, try again later");
+                utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
                 /* TODO */
             }
         }
 
         @Override
         protected void onCancelled() {
-            utils.DisplayDialog(getApplicationContext(), "Error", "Couldn't prepare new recipe, try again later");
+            utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
             /* TODO */
         }
     }
