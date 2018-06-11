@@ -1,6 +1,7 @@
 package com.example.dinemate;
 
 import android.content.Intent;
+import android.icu.util.TimeUnit;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.TextView;
+
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,7 +20,7 @@ import java.sql.Statement;
 public class RecommendActivity extends BaseDrawerActivity {
 
     private int userId;
-    private int recipeId;
+    private String recipeId;
     private String recipeName;
     private String recipeIngredients;
     private String recipeDirections;
@@ -26,6 +29,8 @@ public class RecommendActivity extends BaseDrawerActivity {
     private PrepareRecipe getRecipe = null;
     private RatingBar ratingBar;
     private UpdateRating updateRating = null;
+    private TextView dishName;
+    private boolean prepareRecipeSucces = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +70,8 @@ public class RecommendActivity extends BaseDrawerActivity {
         ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-                sendRating(rating);
+                if(rating != 0)
+                    sendRating(rating);
             }
         });
     }
@@ -90,7 +96,9 @@ public class RecommendActivity extends BaseDrawerActivity {
     }
 
     public void updateRecipe() {
-        // TODO Update shown recipe and all dependencies
+        dishName = findViewById(R.id.dish_name);
+        dishName.setText(recipeName);
+        ratingBar.setRating(0);
     }
 
     public void prepareRecipe() {
@@ -110,6 +118,7 @@ public class RecommendActivity extends BaseDrawerActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            prepareRecipeSucces = false;
             try (Connection dbConnection = AppUtils.getConnection()) {
                 Statement dbStatement = dbConnection.createStatement();
                 String getDishSql = String.format("SELECT * FROM " +
@@ -119,24 +128,22 @@ public class RecommendActivity extends BaseDrawerActivity {
                         "ORDER BY RANDOM() LIMIT 1", userId, userId);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
 
-                if (getDishResult.next())
-                {
-                    recipeId = getDishResult.getInt("dish_id");
+                if (getDishResult.next()) {
+                    recipeId = getDishResult.getString("dish_id");
                     recipeName = getDishResult.getString("name");
                     recipeIngredients = getDishResult.getString("ingredients");
                     recipeDirections = getDishResult.getString("directions");
                     recipeImageUrl = getDishResult.getString("image_url");
                     recipePublisherUrl = getDishResult.getString("publisher_url");
+                    prepareRecipeSucces = true;
                     return true;
                 }
-                else
-                {
+                else {
                     everythingRated = true;
                     return false;
                 }
+
             } catch (SQLException | URISyntaxException e) {
-                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
-                        "There is no internet connection.");
                 Log.i("connection", e.toString());
             }
 
@@ -167,10 +174,10 @@ public class RecommendActivity extends BaseDrawerActivity {
     public class UpdateRating extends AsyncTask<Void, Void, Boolean> {
 
         private final int mUserId;
-        private final int mRecipeId;
+        private final String mRecipeId;
         private final int mRating;
 
-        UpdateRating(int userId, int recipeId, int rating) {
+        UpdateRating(int userId, String recipeId, int rating) {
             mUserId = userId;
             mRecipeId = recipeId;
             mRating = rating;
@@ -188,8 +195,6 @@ public class RecommendActivity extends BaseDrawerActivity {
                 dbStatement.executeUpdate(upsertRatingSql);
                 return true;
             } catch (SQLException | URISyntaxException e) {
-                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
-                        "There is no internet connection.");
                 Log.i("connection", e.toString());
             }
 
