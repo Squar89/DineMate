@@ -39,7 +39,7 @@ public class RecommendActivity extends BaseDrawerActivity {
     private TextView dishName;
     private ImageView dishImage;
     private boolean prepareRecipeSucces = true;
-    Bitmap icon;
+    private Bitmap icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
