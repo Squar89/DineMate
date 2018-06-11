@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class RecommendActivity extends BaseDrawerActivity {
+
     private int userId;
     private int recipeId;
+    private String recipeName;
+    private String recipeIngredients;
+    private String recipeDirections;
+    private String recipeImageUrl;
+    private String recipePublisherUrl;
     private PrepareRecipe getRecipe = null;
     private RatingBar ratingBar;
     private UpdateRating updateRating = null;
@@ -88,7 +100,7 @@ public class RecommendActivity extends BaseDrawerActivity {
     }
 
     public void prepareRecipe() {
-        getRecipe = new PrepareRecipe(userId);
+        getRecipe = new PrepareRecipe();
         getRecipe.execute();
     }
 
@@ -99,17 +111,36 @@ public class RecommendActivity extends BaseDrawerActivity {
 
     /* Asynchronized task used to download a new recipe */
     public class PrepareRecipe extends AsyncTask<Void, Void, Boolean> {
-
-        private final int mUserId;
-
-        PrepareRecipe(int userId) {
-            mUserId = userId;
-        }
+        PrepareRecipe() {}
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            /* TODO */
-            /* Połącz się z bazą danych, dostań rekomendacje i ustaw recipeId, obrazek nazwe itd */
+            try (Connection dbConnection = AppUtils.getConnection()) {
+                Statement dbStatement = dbConnection.createStatement();
+                String getDishSql = String.format("SELECT * FROM " +
+                        "((SELECT * FROM dishes EXCEPT (SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s)) " +
+                        "UNION " +
+                        "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s AND ratings.rate IS NULL AND ratings.date < NOW() - INTERVAL '7 days')) AS dishes " +
+                        "ORDER BY RANDOM() LIMIT 1", userId, userId);
+                ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
+                if (getDishResult.next())
+                {
+                    recipeId = getDishResult.getInt("dish_id");
+                    recipeName = getDishResult.getString("name");
+                    recipeIngredients = getDishResult.getString("ingredients");
+                    recipeDirections = getDishResult.getString("directions");
+                    recipeImageUrl = getDishResult.getString("image_url");
+                    recipePublisherUrl = getDishResult.getString("publisher_url");
+                }
+                else
+                {
+                    AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                            "There are no unrated recipes right now. Maybe check out ones you already rated? :)");
+                }
+                return true;
+            } catch (SQLException | URISyntaxException e) {
+                Log.i("connection", e.toString());
+            }
 
             return false;
         }

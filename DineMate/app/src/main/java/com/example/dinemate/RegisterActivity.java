@@ -295,11 +295,37 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         int IS_PRIMARY = 1;
     }
 
+    private Boolean checkUsername(String userName){
+
+        try {
+            Connection connection = AppUtils.getConnection();
+
+            Statement stmt = connection.createStatement();
+            String query = "SELECT * FROM users WHERE login='" + userName + "';";
+            Log.i("query", query);
+
+            ResultSet resultSet = stmt.executeQuery(query);
+            if( !resultSet.next() )
+                mUsernameView.setError(getString(R.string.username_taken));
+                mUsernameView.requestFocus();
+                return false;
+        } catch (Exception e){
+            Log.i("connectionFail", e.toString());
+            AppUtils.DisplayDialog(RegisterActivity.this, "Error",
+                    "Can't connect to a server, try again later");
+            return false;
+        }
+
+    }
+
     /**
      * Represents an asynchronous registration task used to authenticate
      * the user.
      */
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private static final String ERR_CON = "Can't connect to a server, try again later";
+        private static final String ERR_USR = "WRONG";
 
         private final String mUsername;
         private final String mPassword;
@@ -308,6 +334,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mGender;
         private final String mContactForm;
         private final String mDescription;
+        private String errorType;
 
         UserRegisterTask(String username, String password, String nickname, int age, String gender,
                       String contactForm, String description) {
@@ -322,12 +349,26 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            /* TODO check if username exists */
-            /*
-            mUsernameView.setError(getString(R.string.username_taken));
-            mUsernameView.requestFocus();
-            return false;
-            */
+
+            try {
+                Connection connection = AppUtils.getConnection();
+
+                Statement stmt = connection.createStatement();
+                String query = "SELECT * FROM users WHERE login='" + mUsername + "';";
+                Log.i("query", query);
+
+                ResultSet resultSet = stmt.executeQuery(query);
+                if( resultSet.next() ) {
+                    errorType = ERR_USR;
+                    return false;
+                }
+            } catch (Exception e){
+                Log.i("connectionFail", e.toString());
+                AppUtils.DisplayDialog(RegisterActivity.this, "Error",
+                        "Can't connect to a server, try again later");
+                errorType = ERR_CON;
+                return false;
+            }
 
             try {
                 Connection connection = AppUtils.getConnection();
@@ -348,14 +389,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 Log.i("query", query);
 
                 stmt.execute(query);
-                return true;
-
+                    return true;
             } catch (Exception e){
                 Log.i("connectionFail", e.toString());
                 AppUtils.DisplayDialog(RegisterActivity.this, "Error",
                         "Can't connect to a server, try again later");
+                errorType = ERR_CON;
+                return false;
             }
-            return false;
         }
 
         @Override
@@ -365,6 +406,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             if (success) {
                 finish();
+            }
+            else if (errorType.equals(ERR_USR)) {
+                mUsernameView.setError(getString(R.string.username_taken));
+                mUsernameView.requestFocus();
+            } else if (errorType.equals(ERR_CON)) {
+                Log.i("connectionFail", "failed :(");
+                AppUtils.DisplayDialog(RegisterActivity.this, "Error",
+                        "Can't connect to a server, try again later");
             }
         }
 
