@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class AppUtils {
     public void DisplayDialog(Context context, String title, String message) {
         final AlertDialog.Builder builder;
@@ -22,5 +28,15 @@ public class AppUtils {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public Connection getConnection() throws URISyntaxException, SQLException {
+        URI dbUri = new URI("postgres://pikbtrtfcvbary:1714f6eb4cbc70cb56a2be007106435db3de2f91a3d5b5346b37a7b434637c71@ec2-54-247-81-88.eu-west-1.compute.amazonaws.com:5432/de3q258qts38nm");
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+
+        return DriverManager.getConnection(dbUrl, username, password);
     }
 }

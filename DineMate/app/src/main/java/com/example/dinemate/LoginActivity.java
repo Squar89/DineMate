@@ -43,6 +43,7 @@ import java.sql.*;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private AppUtils utils = new AppUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,16 +259,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private Connection getConnection() throws URISyntaxException, SQLException {
-            URI dbUri = new URI("postgres://pikbtrtfcvbary:1714f6eb4cbc70cb56a2be007106435db3de2f91a3d5b5346b37a7b434637c71@ec2-54-247-81-88.eu-west-1.compute.amazonaws.com:5432/de3q258qts38nm");
-
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
-
-            return DriverManager.getConnection(dbUrl, username, password);
-        }
-
         private final String mUsername;
         private final String mPassword;
 
@@ -289,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 Log.i("getConnection", "cos dziala");
-                Connection connection = getConnection();
+                Connection connection = utils.getConnection();
 
                 Log.i("createStatement", "cos dziala");
                 Statement stmt = connection.createStatement();

@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private View mProgressView;
     private View mRegisterFormView;
+    private AppUtils utils = new AppUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,11 +316,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mContactForm;
         private final String mDescription;
 
-        UserRegisterTask(String username, String password, String name, int age, String gender,
+        UserRegisterTask(String username, String password, String nickname, int age, String gender,
                       String contactForm, String description) {
             mUsername = username;
             mPassword = password;
-            mName = name;
+            mName = nickname;
             mAge = age;
             mGender = gender;
             mContactForm = contactForm;
@@ -326,7 +331,25 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         protected Boolean doInBackground(Void... params) {
             // TODO: create new user here (be careful for database errors as username not unique)
 
-            return true;
+
+            try {
+                Log.i("getConnection", "cos dziala");
+                Connection connection = utils.getConnection();
+
+//                Log.i("createStatement", "cos dziala");
+//                Statement stmt = connection.createStatement();
+//                String query = "INSERT INTO users VALUES(" +
+//                        "DEFAULT,"
+//                        "'" +   +"'" +  + "';";
+//
+//                Log.i("query", query);
+//                if(stmt.execute(query) )
+//                    return true;
+
+            } catch (Exception e){
+                Log.i("connection", e.toString());
+            }
+            return false;
         }
 
         @Override
@@ -335,7 +358,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             showProgress(false);
 
             if (success) {
-                /* TODO make sure this will go back to LoginActivity */
                 finish();
             } else {
                 /* TODO set errors? alert failure?*/
