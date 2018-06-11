@@ -164,10 +164,7 @@ public class RecommendActivity extends BaseDrawerActivity {
         }
 
         @Override
-        protected void onCancelled() {
-            AppUtils.DisplayDialog(RecommendActivity.this, "Error",
-                    "Couldn't prepare new recipe, try again later");
-        }
+        protected void onCancelled() {}
     }
 
     /* Asynchronized task used to upload rating to database */
@@ -212,9 +209,6 @@ public class RecommendActivity extends BaseDrawerActivity {
         }
 
         @Override
-        protected void onCancelled() {
-            AppUtils.DisplayDialog(RecommendActivity.this, "Error",
-                    "Couldn't upload rating, try again later");
-        }
+        protected void onCancelled() {}
     }
 }

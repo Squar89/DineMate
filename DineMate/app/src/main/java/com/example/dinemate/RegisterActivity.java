@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             cancel = true;
         } else {
             if (!isAgeValid(age)) {
-                mAgeView.setError(getString(R.string.error_invalid_username));
+                mAgeView.setError(getString(R.string.error_incorrect_age));
                 focusView = mAgeView;
                 cancel = true;
             }

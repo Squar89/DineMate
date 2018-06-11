@@ -58,7 +58,11 @@
             android:name=".BaseDrawerActivity"
             android:label="@string/title_activity_base_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UserInfoActivity"></activity>
+        <activity android:name=".UserInfoActivity" />
+        <activity
+            android:name=".test123"
+            android:label="@string/title_activity_test123"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

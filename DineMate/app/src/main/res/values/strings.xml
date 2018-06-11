@@ -11,6 +11,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_incorrect_age">This age is invalid</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -207,4 +208,5 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="title_activity_user_profile">Profile</string>
     <string name="title_activity_base_drawer">BaseDrawerActivity</string>
+    <string name="title_activity_test123">test123</string>
 </resources>
