@@ -54,6 +54,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dinemate.RecommendActivity" />
         </activity>
+        <activity
+            android:name=".BaseDrawerActivity"
+            android:label="@string/title_activity_base_drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
