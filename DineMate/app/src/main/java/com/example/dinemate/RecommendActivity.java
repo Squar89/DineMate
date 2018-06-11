@@ -63,8 +63,9 @@ public class RecommendActivity extends BaseDrawerActivity {
         /* User was not authenticated, go back to login activity */
         if (userId == -1) {
             Intent authenticateAgain = new Intent(getApplicationContext(), LoginActivity.class);
-            finish();
+            Log.i("ouch", "Why are u running?");
             startActivity(authenticateAgain);
+            finish();
         }
 
         addListenerOnRatingBar();

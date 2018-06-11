@@ -209,4 +209,6 @@
     <string name="title_activity_user_profile">Profile</string>
     <string name="title_activity_base_drawer">BaseDrawerActivity</string>
     <string name="title_activity_test123">test123</string>
+    <string name="title_activity_people">PeopleActivity</string>
+    <string name="title_activity_test">testActivity</string>
 </resources>
