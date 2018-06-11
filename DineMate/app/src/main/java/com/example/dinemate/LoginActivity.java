@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,15 +32,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.*;
+
+
 /**
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -65,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -316,8 +330,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
+        private Connection getConnection() throws URISyntaxException, SQLException {
+            URI dbUri = new URI("postgres://pikbtrtfcvbary:1714f6eb4cbc70cb56a2be007106435db3de2f91a3d5b5346b37a7b434637c71@ec2-54-247-81-88.eu-west-1.compute.amazonaws.com:5432/de3q258qts38nm");
+
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+
+            return DriverManager.getConnection(dbUrl, username, password);
+        }
+
+
+
         private final String mUsername;
         private final String mPassword;
+        static final String JDBC_DRIVER = "org.postgresql.Driver";
 
         UserLoginTask(String username, String password) {
             mUsername = username;
@@ -326,8 +353,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            Log.i("dupa", "cos dziala");
             // TODO: attempt authentication against a network service.
 
+            try {
+                Log.i("krewwoku", "cos dziala");
+                Connection connection = getConnection();
+
+                Log.i("cokolwiek", "cos dziala");
+                Statement stmt = connection.createStatement();
+                stmt.executeUpdate("DROP TABLE IF EXISTS ticks");
+                stmt.executeUpdate("CREATE TABLE ticks (tick timestamp)");
+                stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+                stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+                ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+                while (rs.next()) {
+                    Log.i("Penis", "cos dziala");
+                    System.out.println("Read from DB: " + rs.getTimestamp("tick"));
+                }
+            } catch (Exception e){
+                Log.i("afs", e.toString());
+            }
             /*
             try {
                 // Simulate network access.
