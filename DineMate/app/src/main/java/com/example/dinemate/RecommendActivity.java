@@ -90,9 +90,12 @@ public class RecommendActivity extends BaseDrawerActivity {
 
     public void showRecipe(View view) {
         Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetails.class);
-        showDetailsIntent.putExtra("userId", userId);
         showDetailsIntent.putExtra("recipeId", recipeId);
-        // TODO put some more extras (whatever is necessary)
+        showDetailsIntent.putExtra("recipeName", recipeName);
+        showDetailsIntent.putExtra("recipeIngredients", recipeIngredients);
+        showDetailsIntent.putExtra("recipeDirections", recipeDirections);
+        showDetailsIntent.putExtra("recipeImageUrl", recipeImageUrl);
+        showDetailsIntent.putExtra("recipePublisherUrl", recipePublisherUrl);
         startActivity(showDetailsIntent);
     }
 
