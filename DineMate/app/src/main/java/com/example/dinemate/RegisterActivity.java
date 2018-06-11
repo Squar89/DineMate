@@ -131,6 +131,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String contact = mContactView.getText().toString();
         String description = mDescriptionView.getText().toString();
         String ages = mAgeView.getText().toString();
+        int age;
 
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         radioSexButton = (RadioButton) findViewById(selectedId);
@@ -186,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             focusView = mAgeView;
             cancel = true;
         } else {
-            int age = Integer.parseInt(ages);
+            age = Integer.parseInt(ages);
             if (!isAgeValid(age)) {
                 mAgeView.setError(getString(R.string.error_invalid_username));
                 focusView = mAgeView;
