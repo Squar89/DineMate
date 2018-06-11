@@ -1,17 +1,24 @@
 package com.example.dinemate;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.util.TimeUnit;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +37,9 @@ public class RecommendActivity extends BaseDrawerActivity {
     private RatingBar ratingBar;
     private UpdateRating updateRating = null;
     private TextView dishName;
+    private ImageView dishImage;
     private boolean prepareRecipeSucces = true;
-
+    Bitmap icon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,9 +104,24 @@ public class RecommendActivity extends BaseDrawerActivity {
     }
 
     public void updateRecipe() {
-        dishName = findViewById(R.id.dish_name);
-        dishName.setText(recipeName);
-        ratingBar.setRating(0);
+        try {
+            dishName = findViewById(R.id.dish_name);
+            dishName.setText(recipeName);
+
+
+            Log.i("OBRAZEK:",recipeImageUrl);
+            dishImage = findViewById(R.id.dish_image);
+            dishImage.setImageBitmap(icon);
+
+            Log.i("OBRAZEK2:",recipeImageUrl);
+            ratingBar.setRating(0);
+
+        } catch ( Exception e) {
+
+            Log.i("wyjatek",e.toString());
+            // TODO blad
+        }
+
     }
 
     public void prepareRecipe() {
@@ -119,6 +142,7 @@ public class RecommendActivity extends BaseDrawerActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             prepareRecipeSucces = false;
+            icon = null;
             try (Connection dbConnection = AppUtils.getConnection()) {
                 Statement dbStatement = dbConnection.createStatement();
                 String getDishSql = String.format("SELECT * FROM " +
@@ -136,6 +160,8 @@ public class RecommendActivity extends BaseDrawerActivity {
                     recipeImageUrl = getDishResult.getString("image_url");
                     recipePublisherUrl = getDishResult.getString("publisher_url");
                     prepareRecipeSucces = true;
+                    InputStream inputStream = new URL(recipeImageUrl).openStream();
+                    icon = BitmapFactory.decodeStream(inputStream);
                     return true;
                 }
                 else {
@@ -143,7 +169,7 @@ public class RecommendActivity extends BaseDrawerActivity {
                     return false;
                 }
 
-            } catch (SQLException | URISyntaxException e) {
+            } catch (SQLException | URISyntaxException | IOException e) {
                 Log.i("connection", e.toString());
             }
 
