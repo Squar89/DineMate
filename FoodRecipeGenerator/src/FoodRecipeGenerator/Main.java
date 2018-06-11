@@ -25,15 +25,14 @@ public class Main
 
     public static void main(String[] args)
     {
-        int startingPage = 1;
-        int pageCount = 1; /** Change pageCount to 1 when debugging! **/
+        int startingPage = 2;
+        int pageCount = 10; /** Change pageCount to 1 when debugging! **/
         int pageNumber = 0;
         String recipeID = "";
         
         try (Connection databaseConnection = getDatabaseConnection())
         {
             databaseStatement = databaseConnection.createStatement();
-
             /* Iterating over "search" API calls. Each API call returns a list of 30 (or less) recipes */
             for (pageNumber = startingPage; pageNumber <= startingPage + pageCount - 1; pageNumber++)
             {
@@ -87,13 +86,14 @@ public class Main
             /* Preparing the fields needed for the database. */
             String name = getJSONRecipe.getString("title");
             name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            name = name.replaceAll("'", "''");
             JSONArray ingredientsJSONArray = getJSONRecipe.getJSONArray("ingredients");
             StringBuilder ingredientsBuilder = new StringBuilder();
             for (int j = 0; j < ingredientsJSONArray.length(); j++)
             {
                 ingredientsBuilder.append(ingredientsJSONArray.getString(j).replaceAll("\n", "")).append("\n");
             }
-            String ingredients = ingredientsBuilder.toString();
+            String ingredients = ingredientsBuilder.toString().replaceAll("'", "''").replaceAll("\n&nbsp;\n", "").replaceAll("&nbsp;", "");
             String imageUrl = getJSONRecipe.getString("image_url");
 
             /* To get the recipe's "directions" field we need to scrap the source website ourselves due to API limitations */
@@ -112,7 +112,9 @@ public class Main
                     {
                         stringBuilder.append(" ").append(matcher.group(1));
                     }
-                    String directions = stringBuilder.toString();
+                    String directions = stringBuilder.toString().replaceAll("'", "''").
+                            replaceAll("\n&nbsp;\n", "").replaceAll("&nbsp;", "").
+                            replaceAll("  +"," ").replaceAll("[.](?=[a-zA-Z])", ". ");
                     String insertRecipeSQL = String.format("INSERT INTO dishes VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
                                                            recipeID, name, ingredients, directions, imageUrl, publisherUrl);
                     databaseStatement.executeUpdate(insertRecipeSQL);

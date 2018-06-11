@@ -11,11 +11,11 @@ class Publishers
     {
         dictionary = new HashMap<String, String>();
         //dictionary.put("http://www.101cookbooks.com", "627");
-        //dictionary.put("http://allrecipes.com", "36792");
+        dictionary.put("http://allrecipes.com", "<span class=\"recipe-directions__list--item\">\\s*(.+?)\\s*</span>");
         //dictionary.put("http://www.aspicyperspective.com", "344");
         //dictionary.put("http://backtoherroots.com/", "287");
         //dictionary.put("http://www.bbc.co.uk/food", "594");
-        //dictionary.put("http://www.bbcgoodfood.com", "11659");
+        dictionary.put("http://www.bbcgoodfood.com", "<li class=\"method__ite(?:m*?|m.+?)\" itemprop=\"recipeInstructions\"><span>(.+?)\\s*<\\/span><\\/li>");
         //dictionary.put("http://www.biggirlssmallkitchen.com/", "290");
         //dictionary.put("http://www.bonappetit.com", "5045");
         //dictionary.put("http://www.bunkycooks.com", "208");
