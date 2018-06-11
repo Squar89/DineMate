@@ -112,6 +112,7 @@ public class RecommendActivity extends BaseDrawerActivity {
 
     /* Asynchronized task used to download a new recipe */
     public class PrepareRecipe extends AsyncTask<Void, Void, Boolean> {
+        private boolean everythingRated = false;
         PrepareRecipe() {}
 
         @Override
@@ -121,7 +122,7 @@ public class RecommendActivity extends BaseDrawerActivity {
                 String getDishSql = String.format("SELECT * FROM " +
                         "((SELECT * FROM dishes EXCEPT (SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s)) " +
                         "UNION " +
-                        "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s AND ratings.rate IS NULL AND ratings.date < NOW() - INTERVAL '7 days')) AS dishes " +
+                        "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s AND ratings.rate = 0 AND ratings.date < NOW() - INTERVAL '7 days')) AS dishes " +
                         "ORDER BY RANDOM() LIMIT 1", userId, userId);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
 
@@ -133,14 +134,13 @@ public class RecommendActivity extends BaseDrawerActivity {
                     recipeDirections = getDishResult.getString("directions");
                     recipeImageUrl = getDishResult.getString("image_url");
                     recipePublisherUrl = getDishResult.getString("publisher_url");
+                    return true;
                 }
-                else // TODO App crashes after rating all of the dishes
+                else
                 {
-                    AppUtils.DisplayDialog(RecommendActivity.this, "Error",
-                            "There are no unrated recipes right now. Maybe check out ones you already rated? :)");
+                    everythingRated = true;
+                    return false;
                 }
-
-                return true;
             } catch (SQLException | URISyntaxException e) {
                 AppUtils.DisplayDialog(RecommendActivity.this, "Error",
                         "There is no internet connection.");
@@ -154,6 +154,9 @@ public class RecommendActivity extends BaseDrawerActivity {
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 updateRecipe();
+            } else if (everythingRated) {
+                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                        "There are no unrated recipes right now. Maybe check out ones you already rated? :)");
             } else {
                 AppUtils.DisplayDialog(RecommendActivity.this, "Error",
                         "Couldn't prepare new recipe, try again later");
