@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class RecommendActivity extends BaseDrawerActivity {
 
@@ -123,6 +124,7 @@ public class RecommendActivity extends BaseDrawerActivity {
                         "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s AND ratings.rate IS NULL AND ratings.date < NOW() - INTERVAL '7 days')) AS dishes " +
                         "ORDER BY RANDOM() LIMIT 1", userId, userId);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
+
                 if (getDishResult.next())
                 {
                     recipeId = getDishResult.getInt("dish_id");
@@ -132,13 +134,16 @@ public class RecommendActivity extends BaseDrawerActivity {
                     recipeImageUrl = getDishResult.getString("image_url");
                     recipePublisherUrl = getDishResult.getString("publisher_url");
                 }
-                else
+                else // TODO App crashes after rating all of the dishes
                 {
                     AppUtils.DisplayDialog(RecommendActivity.this, "Error",
                             "There are no unrated recipes right now. Maybe check out ones you already rated? :)");
                 }
+
                 return true;
             } catch (SQLException | URISyntaxException e) {
+                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                        "There is no internet connection.");
                 Log.i("connection", e.toString());
             }
 
@@ -177,7 +182,20 @@ public class RecommendActivity extends BaseDrawerActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            /* TODO przeslij ocene do db (lub update)*/
+            try (Connection dbConnection = AppUtils.getConnection()) {
+                Statement dbStatement = dbConnection.createStatement();
+                String upsertRatingSql = String.format("INSERT INTO ratings (user_id, dish_id, rate) " +
+                        "VALUES (%d, '%s', %d) " +
+                        "ON CONFLICT (user_id, dish_id) DO UPDATE " +
+                        "  SET rate = excluded.rate, " +
+                        "      date = NOW()", mUserId, mRecipeId, mRating);
+                dbStatement.executeUpdate(upsertRatingSql);
+                return true;
+            } catch (SQLException | URISyntaxException e) {
+                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                        "There is no internet connection.");
+                Log.i("connection", e.toString());
+            }
 
             return false;
         }
