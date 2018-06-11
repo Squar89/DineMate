@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.URI;
@@ -269,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mUsername;
         private final String mPassword;
 
+        private int userId;
         UserLoginTask(String username, String password) {
             mUsername = username;
             mPassword = password;
@@ -277,32 +279,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
 
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+
+
+
             Log.i("dupa", "cos dziala");
             // TODO: attempt authentication against a network service.
 
             try {
-                Log.i("krewwoku", "cos dziala");
+                Log.i("getConnection", "cos dziala");
                 Connection connection = getConnection();
 
-                Log.i("cokolwiek", "cos dziala");
+                Log.i("createStatement", "cos dziala");
                 Statement stmt = connection.createStatement();
-                stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-                stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-                ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-                while (rs.next()) {
-                    Log.i("Penis", "cos dziala");
-                    System.out.println("Read from DB: " + rs.getTimestamp("tick"));
-                }
-            } catch (Exception e){
-                Log.i("afs", e.toString());
-            }
+                String query = "SELECT user_id FROM users WHERE login='" + mUsername + "'AND  password_hash='" + mPassword +"';";
+                Log.i("query", query);
+                ResultSet resultSet = stmt.executeQuery(query);
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUsername)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                Log.i("userID_przed", "USER_ID:" + userId);
+                if( resultSet.next()){
+                    userId = resultSet.getInt("user_id");
+                    Log.i("userID_po", "USER_ID:" + userId);
+                    return true;
                 }
+
+            } catch (Exception e){
+                Log.i("exception", e.toString());
+                return false;
             }
 
             return false;
@@ -317,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 /* TODO find out users id and pass it to next activity */
 
                 Intent succesfullLoginIntent = new Intent(getApplicationContext(), RecommendActivity.class);
-                succesfullLoginIntent.putExtra("userId", 1);//TODO change value
+                succesfullLoginIntent.putExtra("userId", userId);//TODO change value
                 startActivity(succesfullLoginIntent);
                 finish();
             } else {
