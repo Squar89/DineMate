@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -122,7 +123,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
-        /* TODO reset more errors */
+        mNicknameView.setError(null);
+        mContactView.setError(null);
+        mDescriptionView.setError(null);
+        mAgeView.setError(null);
 
         // Store values at the time of the register attempt.
         String username = mUsernameView.getText().toString();
@@ -131,13 +135,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String contact = mContactView.getText().toString();
         String description = mDescriptionView.getText().toString();
         String ages = mAgeView.getText().toString();
-        int age;
+        int age = Integer.parseInt(ages);
 
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         radioSexButton = (RadioButton) findViewById(selectedId);
         String sex = radioSexButton.getText().toString();
-
-        /* TODO Store more values */
 
         boolean cancel = false;
         View focusView = null;
@@ -187,15 +189,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             focusView = mAgeView;
             cancel = true;
         } else {
-            age = Integer.parseInt(ages);
             if (!isAgeValid(age)) {
                 mAgeView.setError(getString(R.string.error_invalid_username));
                 focusView = mAgeView;
                 cancel = true;
             }
         }
-
-        /* TODO check if rest of forms are valid */
 
         if (cancel) {
             // There was an error; don't attempt register and focus the first
@@ -205,10 +204,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show a progress spinner, and kick off a background task to
             // perform the user register attempt.
             showProgress(true);
-            /* TODO execute register task
-            mAuthTask = new UserRegisterTask(username, password);
+            mAuthTask = new UserRegisterTask(username, password, nickname, age, sex, contact, description);
             mAuthTask.execute((Void) null);
-            */
         }
     }
 
@@ -223,8 +220,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private boolean isAgeValid(int age) {
         return age < 120 && age > 15;
     }
-
-    /* TODO isSomethingValid */
 
     /**
      * Shows the progress UI and hides the register form.
@@ -335,7 +330,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             showProgress(false);
 
             if (success) {
-                /* TODO make sure this will go back to LoginActivity */
                 finish();
             } else {
                 /* TODO set errors? alert failure?*/
