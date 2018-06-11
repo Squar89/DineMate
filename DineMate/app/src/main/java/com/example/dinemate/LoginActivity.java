@@ -276,6 +276,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
+
+
             Log.i("dupa", "cos dziala");
             // TODO: attempt authentication against a network service.
 
