@@ -30,7 +30,7 @@
             android:label="@string/title_activity_recommend"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RecipeDetails"
+            android:name=".RecipeDetailsActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -57,7 +57,8 @@
         <activity
             android:name=".BaseDrawerActivity"
             android:label="@string/title_activity_base_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserInfoActivity"></activity>
     </application>
 
 </manifest>

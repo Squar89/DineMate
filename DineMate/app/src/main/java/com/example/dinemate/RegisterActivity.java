@@ -364,8 +364,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 }
             } catch (Exception e){
                 Log.i("connectionFail", e.toString());
-                AppUtils.DisplayDialog(RegisterActivity.this, "Error",
-                        "Can't connect to a server, try again later");
                 errorType = ERR_CON;
                 return false;
             }
@@ -392,8 +390,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                     return true;
             } catch (Exception e){
                 Log.i("connectionFail", e.toString());
-                AppUtils.DisplayDialog(RegisterActivity.this, "Error",
-                        "Can't connect to a server, try again later");
                 errorType = ERR_CON;
                 return false;
             }

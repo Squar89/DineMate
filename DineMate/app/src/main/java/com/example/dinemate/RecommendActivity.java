@@ -3,18 +3,9 @@ package com.example.dinemate;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import java.net.URISyntaxException;
@@ -22,7 +13,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Locale;
 
 public class RecommendActivity extends BaseDrawerActivity {
 
@@ -89,7 +79,7 @@ public class RecommendActivity extends BaseDrawerActivity {
     }
 
     public void showRecipe(View view) {
-        Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetails.class);
+        Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
         showDetailsIntent.putExtra("recipeId", recipeId);
         showDetailsIntent.putExtra("recipeName", recipeName);
         showDetailsIntent.putExtra("recipeIngredients", recipeIngredients);
