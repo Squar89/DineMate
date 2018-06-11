@@ -366,8 +366,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Log.i("cokolwiek", "cos dziala");
                 Statement stmt = connection.createStatement();
-                stmt.executeUpdate("DROP TABLE IF EXISTS ticks");
-                stmt.executeUpdate("CREATE TABLE ticks (tick timestamp)");
                 stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
                 stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
                 ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
@@ -378,14 +376,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (Exception e){
                 Log.i("afs", e.toString());
             }
-            /*
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            */
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
@@ -395,7 +385,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
 
-            // TODO: register the new account here.
             return false;
         }
 
