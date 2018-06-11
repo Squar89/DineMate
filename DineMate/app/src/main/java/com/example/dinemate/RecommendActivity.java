@@ -23,9 +23,7 @@ public class RecommendActivity extends AppCompatActivity
     private int recipeId;
     private PrepareRecipe getRecipe = null;
     private RatingBar ratingBar;
-    private AppUtils utils = new AppUtils();
     private UpdateRating updateRating = null;
-    private boolean updateRatingResult = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +130,7 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     public void saveAction(View view) {
-        // TODO insert into database
+        sendRating(0);
     }
 
     public void showRecipe(View view) {
@@ -153,14 +151,8 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     private void sendRating(float rating) {
-        updateRatingResult = false;
-
         updateRating = new UpdateRating(userId, recipeId, (int) rating);
         updateRating.execute();
-
-        if (updateRatingResult) {
-            prepareRecipe();
-        }
     }
 
     /* Asynchronized task used to download a new recipe */
@@ -185,13 +177,15 @@ public class RecommendActivity extends AppCompatActivity
             if (success) {
                 updateRecipe();
             } else {
-                utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
+                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                        "Couldn't prepare new recipe, try again later");
             }
         }
 
         @Override
         protected void onCancelled() {
-            utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
+            AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                    "Couldn't prepare new recipe, try again later");
         }
     }
 
@@ -210,7 +204,7 @@ public class RecommendActivity extends AppCompatActivity
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            /* TODO przeslij ocene do db*/
+            /* TODO przeslij ocene do db (lub update)*/
 
             return false;
         }
@@ -218,15 +212,17 @@ public class RecommendActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                updateRatingResult = true;
+                prepareRecipe();
             } else {
-                utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't upload rating, try again later");
+                AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                        "Couldn't upload rating, try again later");
             }
         }
 
         @Override
         protected void onCancelled() {
-            utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't upload rating, try again later");
+            AppUtils.DisplayDialog(RecommendActivity.this, "Error",
+                    "Couldn't upload rating, try again later");
         }
     }
 }

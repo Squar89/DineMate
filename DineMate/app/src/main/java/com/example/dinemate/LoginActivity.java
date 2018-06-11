@@ -43,14 +43,6 @@ import java.sql.*;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "username:password"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -61,7 +53,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private AppUtils utils = new AppUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,11 +253,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             try {
                 Log.i("getConnection", "cos dziala");
-                Connection connection = utils.getConnection();
+                Connection connection = AppUtils.getConnection();
 
                 Log.i("createStatement", "cos dziala");
                 Statement stmt = connection.createStatement();
-                String query = "SELECT user_id FROM users WHERE login='" + mUsername + "'AND  password_hash='" + mPassword +"';";
+                String query = "SELECT user_id FROM users WHERE login='" + mUsername +
+                        "'AND  password_hash='" + mPassword +"';";
                 Log.i("query", query);
                 ResultSet resultSet = stmt.executeQuery(query);
 

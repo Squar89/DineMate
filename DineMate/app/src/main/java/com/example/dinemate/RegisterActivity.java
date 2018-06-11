@@ -58,7 +58,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private View mProgressView;
     private View mRegisterFormView;
-    private AppUtils utils = new AppUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,14 +322,16 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: create new user here (be careful for database errors as username not unique)
-
+            /* TODO check if username exists */
+            /*
+            mUsernameView.setError(getString(R.string.username_taken));
+            mUsernameView.requestFocus();
+            return false;
+            */
 
             try {
-                Log.i("getConnection", "cos dziala");
-                Connection connection = utils.getConnection();
+                Connection connection = AppUtils.getConnection();
 
-                Log.i("createStatement", "cos dziala");
                 Statement stmt = connection.createStatement();
                 int birthYear = 2018-mAge;
                 String query = "INSERT INTO users VALUES(" +
@@ -351,6 +352,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             } catch (Exception e){
                 Log.i("connectionFail", e.toString());
+                AppUtils.DisplayDialog(RegisterActivity.this, "Error",
+                        "Can't connect to a server, try again later");
             }
             return false;
         }
@@ -362,10 +365,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             if (success) {
                 finish();
-            } else {
-                /* TODO set errors? alert failure?*/
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 

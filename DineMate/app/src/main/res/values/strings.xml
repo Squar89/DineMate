@@ -15,12 +15,13 @@
         completions."
     </string>
 
-    <!-- Strings related to registratin -->
+    <!-- Strings related to registration -->
     <string name="user_nickname">Name</string>
     <string name="user_contact">Concact Data</string>
     <string name="user_age">Age</string>
     <string name="user_sex">Sex</string>
     <string name="user_description">Description</string>
+    <string name="username_taken">This username is already taken</string>
 
     <!-- Strings related to navigation bar -->
     <string name="title_activity_recommend">Your recommendations</string>
