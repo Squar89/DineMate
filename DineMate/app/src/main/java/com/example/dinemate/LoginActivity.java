@@ -340,11 +340,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return DriverManager.getConnection(dbUrl, username, password);
         }
 
-
-
         private final String mUsername;
         private final String mPassword;
-        static final String JDBC_DRIVER = "org.postgresql.Driver";
 
         UserLoginTask(String username, String password) {
             mUsername = username;
@@ -353,9 +350,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
 
             Log.i("dupa", "cos dziala");
             // TODO: attempt authentication against a network service.
@@ -398,8 +392,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Intent succesfullLoginIntent = new Intent(getApplicationContext(), RecommendActivity.class);
                 succesfullLoginIntent.putExtra("userId", 1);//TODO change value
-                finish();
                 startActivity(succesfullLoginIntent);
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

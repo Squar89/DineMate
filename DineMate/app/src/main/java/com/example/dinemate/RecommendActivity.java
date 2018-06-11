@@ -42,7 +42,6 @@ public class RecommendActivity extends AppCompatActivity
             }
         });
         */
-        addListenerOnRatingBar();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,7 +61,7 @@ public class RecommendActivity extends AppCompatActivity
             startActivity(authenticateAgain);
         }
 
-
+        addListenerOnRatingBar();
         prepareRecipe();
     }
 
