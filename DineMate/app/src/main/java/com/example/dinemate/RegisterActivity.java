@@ -24,7 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +45,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private EditText mNicknameView;
+    private EditText mAgeView;
+    private EditText mContactView;
+    private EditText mDescriptionView;
+    private RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
+
     private View mProgressView;
     private View mRegisterFormView;
 
@@ -54,6 +65,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        mNicknameView = (EditText) findViewById(R.id.nickname);
+        mAgeView = (EditText) findViewById(R.id.age);
+        mContactView = (EditText) findViewById(R.id.contact_data);
+        mDescriptionView = (EditText) findViewById(R.id.description);
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -110,6 +127,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         // Store values at the time of the register attempt.
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String nickname = mNicknameView.getText().toString();
+        String contact = mContactView.getText().toString();
+        String description = mDescriptionView.getText().toString();
+        String ages = mAgeView.getText().toString();
+
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        radioSexButton = (RadioButton) findViewById(selectedId);
+        String sex = radioSexButton.getText().toString();
+
         /* TODO Store more values */
 
         boolean cancel = false;
@@ -131,6 +157,41 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mUsernameView.setError(getString(R.string.error_invalid_username));
             focusView = mUsernameView;
             cancel = true;
+        }
+
+        // Check for a valid nickname.
+        if (TextUtils.isEmpty(nickname)) {
+            mNicknameView.setError(getString(R.string.error_field_required));
+            focusView = mNicknameView;
+            cancel = true;
+        }
+
+        // Check for a valid contact.
+        if (TextUtils.isEmpty(contact)) {
+            mContactView.setError(getString(R.string.error_field_required));
+            focusView = mContactView;
+            cancel = true;
+        }
+
+        // Check for a valid description.
+        if (TextUtils.isEmpty(description)) {
+            mDescriptionView.setError(getString(R.string.error_field_required));
+            focusView = mDescriptionView;
+            cancel = true;
+        }
+
+        // Check for a valid age.
+        if (TextUtils.isEmpty(username)) {
+            mAgeView.setError(getString(R.string.error_field_required));
+            focusView = mAgeView;
+            cancel = true;
+        } else {
+            int age = Integer.parseInt(ages);
+            if (!isAgeValid(age)) {
+                mAgeView.setError(getString(R.string.error_invalid_username));
+                focusView = mAgeView;
+                cancel = true;
+            }
         }
 
         /* TODO check if rest of forms are valid */
@@ -156,6 +217,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    private boolean isAgeValid(int age) {
+        return age < 120 && age > 15;
     }
 
     /* TODO isSomethingValid */

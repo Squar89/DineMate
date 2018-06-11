@@ -15,6 +15,13 @@
         completions."
     </string>
 
+    <!-- Strings related to registratin -->
+    <string name="user_nickname">Name</string>
+    <string name="user_contact">Concact Data</string>
+    <string name="user_age">Age</string>
+    <string name="user_sex">Sex</string>
+    <string name="user_description">Description</string>
+
     <!-- Strings related to navigation bar -->
     <string name="title_activity_recommend">Your recommendations</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,8 +32,6 @@
     <string name="action_settings">Settings</string>
 
     <!-- Strings related to recommend activity -->
-    <string name="yay_button">Yay</string>
-    <string name="nay_button">Nay</string>
     <string name="save_button">Save</string>
     <string name="dish_name">Dish name</string>
     <string name="dish_image">Dish image</string>
