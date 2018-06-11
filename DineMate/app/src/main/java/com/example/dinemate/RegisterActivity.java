@@ -330,18 +330,27 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 Log.i("getConnection", "cos dziala");
                 Connection connection = utils.getConnection();
 
-//                Log.i("createStatement", "cos dziala");
-//                Statement stmt = connection.createStatement();
-//                String query = "INSERT INTO users VALUES(" +
-//                        "DEFAULT,"
-//                        "'" +   +"'" +  + "';";
-//
-//                Log.i("query", query);
-//                if(stmt.execute(query) )
-//                    return true;
+                Log.i("createStatement", "cos dziala");
+                Statement stmt = connection.createStatement();
+                int birthYear = 2018-mAge;
+                String query = "INSERT INTO users VALUES(" +
+                        "DEFAULT," +
+                        "'" + mUsername  + "'," +
+                        "'" + mPassword  + "'," +
+                        "'" + mName  + "'," +
+                        + birthYear + "," +
+                        "'" + mGender  + "'," +
+                        "'" + mContactForm  + "'," +
+                        "'" + mDescription  + "'" +
+                         ");";
+
+                Log.i("query", query);
+
+                stmt.execute(query);
+                return true;
 
             } catch (Exception e){
-                Log.i("connection", e.toString());
+                Log.i("connectionFail", e.toString());
             }
             return false;
         }
