@@ -169,15 +169,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    /*
-    private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
-    */
-
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -235,9 +227,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {}
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -270,17 +260,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-
-
-
-
-
-            Log.i("dupa", "cos dziala");
-            // TODO: attempt authentication against a network service.
-
             try {
                 Log.i("getConnection", "cos dziala");
                 Connection connection = utils.getConnection();
@@ -312,10 +291,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                /* TODO find out users id and pass it to next activity */
-
                 Intent succesfullLoginIntent = new Intent(getApplicationContext(), RecommendActivity.class);
-                succesfullLoginIntent.putExtra("userId", userId);//TODO change value
+                succesfullLoginIntent.putExtra("userId", userId);
                 startActivity(succesfullLoginIntent);
                 finish();
             } else {

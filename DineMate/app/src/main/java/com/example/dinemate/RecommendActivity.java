@@ -24,6 +24,8 @@ public class RecommendActivity extends AppCompatActivity
     private PrepareRecipe getRecipe = null;
     private RatingBar ratingBar;
     private AppUtils utils = new AppUtils();
+    private UpdateRating updateRating = null;
+    private boolean updateRatingResult = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +153,14 @@ public class RecommendActivity extends AppCompatActivity
     }
 
     private void sendRating(float rating) {
+        updateRatingResult = false;
 
+        updateRating = new UpdateRating(userId, recipeId, (int) rating);
+        updateRating.execute();
+
+        if (updateRatingResult) {
+            prepareRecipe();
+        }
     }
 
     /* Asynchronized task used to download a new recipe */
@@ -183,6 +192,41 @@ public class RecommendActivity extends AppCompatActivity
         @Override
         protected void onCancelled() {
             utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't prepare new recipe, try again later");
+        }
+    }
+
+    /* Asynchronized task used to upload rating to database */
+    public class UpdateRating extends AsyncTask<Void, Void, Boolean> {
+
+        private final int mUserId;
+        private final int mRecipeId;
+        private final int mRating;
+
+        UpdateRating(int userId, int recipeId, int rating) {
+            mUserId = userId;
+            mRecipeId = recipeId;
+            mRating = rating;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            /* TODO przeslij ocene do db*/
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                updateRatingResult = true;
+            } else {
+                utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't upload rating, try again later");
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            utils.DisplayDialog(RecommendActivity.this, "Error", "Couldn't upload rating, try again later");
         }
     }
 }
