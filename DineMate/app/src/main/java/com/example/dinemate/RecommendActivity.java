@@ -47,17 +47,6 @@ public class RecommendActivity extends BaseDrawerActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "*TODO*", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
-
         /* Authenticate User */
         userId = getIntent().getIntExtra("userId", -1);
         /* User was not authenticated, go back to login activity */

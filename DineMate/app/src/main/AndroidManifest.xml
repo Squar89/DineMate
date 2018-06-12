@@ -66,6 +66,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dinemate.RecommendActivity" />
         </activity>
+        <activity
+            android:name=".RatedActivity"
+            android:label="@string/title_activity_rated"
+            android:parentActivityName=".RecommendActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dinemate.RecommendActivity" />
+        </activity>
     </application>
 
 </manifest>
