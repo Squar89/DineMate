@@ -212,4 +212,10 @@
     <string name="title_activity_people">PeopleActivity</string>
     <string name="title_activity_test">testActivity</string>
     <string name="title_activity_rated">RatedActivity</string>
+    <string name="saved_recipes">Saved Recipes</string>
+    <string name="find_new_mates">Find New Mates</string>
+    <string name="profile">Profile</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="send">Send</string>
 </resources>
