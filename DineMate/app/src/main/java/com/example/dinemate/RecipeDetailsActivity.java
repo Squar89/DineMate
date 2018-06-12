@@ -76,9 +76,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 AppBarLayout background = (AppBarLayout)findViewById(R.id.app_bar);
                 Drawable image = new BitmapDrawable(getResources(), icon);
                 background.setBackground(image);
-                Log.i("penis","penis");
-//                dishImage = findViewById(R.id.dish_image);
-//                dishImage.setImageBitmap(icon);
             }
         }
 
