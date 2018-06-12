@@ -90,9 +90,9 @@ public class RecommendActivity extends BaseDrawerActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_saved) {
-            //Intent savedIntent = new Intent(getApplicationContext(), RatedActivity.class);
-            //putextra
-            //startActivity(savedIntent);
+            Intent savedIntent = new Intent(getApplicationContext(), RatedActivity.class);
+            savedIntent.putExtra("userId", userId);
+            startActivity(savedIntent);
         } else if (id == R.id.nav_mates) {
             Intent matesIntent = new Intent(getApplicationContext(), PeopleActivity.class);
             matesIntent.putExtra("userId", userId);
@@ -101,10 +101,6 @@ public class RecommendActivity extends BaseDrawerActivity {
             Intent profileIntent = new Intent(getApplicationContext(), UserInfoActivity.class);
             profileIntent.putExtra("userId", userId);
             startActivity(profileIntent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
