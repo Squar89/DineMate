@@ -123,7 +123,7 @@ public class PeopleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people);
 
-        userId = getIntent().getIntExtra("Id", 0);
+        userId = getIntent().getIntExtra("userId", 0);
 
         GetDineMates getDineMates = new GetDineMates();
         getDineMates.execute();
@@ -133,6 +133,10 @@ public class PeopleActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         if (id==android.R.id.home) {
             finish();
         }
@@ -151,19 +155,17 @@ public class PeopleActivity extends AppCompatActivity {
                 Log.i("ziomek",getDishSql);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
 
-                if (getDishResult.next()) {
+                while (getDishResult.next()) {
                     dineMatesCounter++;
                     my_name = getDishResult.getString("nick");
                     my_age = getDishResult.getInt("age");
                     my_sex = getDishResult.getString("gender");
 
                     mArrData.add(new Person(my_name,my_sex,my_age));
-
-                    return true;
-                } else {
-                    return false;
                 }
-
+                if(dineMatesCounter > 0 )
+                    return true;
+                return false;
             } catch (SQLException | URISyntaxException e) {
                 Log.i("connection", e.toString());
             }
