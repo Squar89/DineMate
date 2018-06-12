@@ -87,7 +87,6 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         Button user_name= view.findViewById(R.id.name);
 
         user_name.setText(list.get(position).name);
-        user_name.setImeOptions(list.get(position).Id);
 
         TextView user_sex= view.findViewById(R.id.sex);
         user_sex.setText(list.get(position).sex);
@@ -103,7 +102,7 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         callbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Integer userId = callbtn.getImeOptions();
+                Integer userId = list.get(position).Id;
                 Intent profileIntent = new Intent(context, UserInfoActivity.class);
                 profileIntent.putExtra("userId", userId);
                 context.startActivity(profileIntent);

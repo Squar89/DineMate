@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -91,21 +92,23 @@ class MyDishListAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display string from your list
         final Button user_name= view.findViewById(R.id.name);
         user_name.setText(list.get(position).name);
-        user_name.setImeOptions(position);
 
         TextView rating = view.findViewById(R.id.rate);
-        rating.setText(list.get(position).rating.toString());
+        if(list.get(position).rating > 0)
+            rating.setText(list.get(position).rating.toString());
 
-        /*
+
         user_name.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Integer userId = user_name.getImeOptions();
-                Intent dishIntent = new Intent(context, UserInfoActivity.class);
-                dishIntent.putExtra("dishId", userId);
-                context.startActivity(profileIntent);
+                Intent dishIntent = new Intent(context, RecipeDetailsActivity.class);
+                dishIntent.putExtra("recipeName", list.get(position).name);
+                dishIntent.putExtra("recipeDirections", list.get(position).description);
+                dishIntent.putExtra("recipeIngredients", list.get(position).ingredients);
+                dishIntent.putExtra("recipeImageUrl", list.get(position).image_url);
+
+                context.startActivity(dishIntent);
             }
         });
-        */
 
         return view;
     }
@@ -128,6 +131,10 @@ public class RatedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rated);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         userId = getIntent().getIntExtra("userId",0);
 
