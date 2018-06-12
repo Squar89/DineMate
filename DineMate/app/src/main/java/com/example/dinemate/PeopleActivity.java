@@ -1,6 +1,7 @@
 package com.example.dinemate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -37,10 +39,12 @@ class Person{
     String name;
     String sex;
     int age;
-    Person(String name,String sex, int age){
+    int Id;
+    Person(String name,String sex, int age, int Id){
         this.name = name;
         this.sex = sex;
         this.age = age;
+        this.Id = Id;
     }
 }
 
@@ -83,6 +87,7 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         Button user_name= view.findViewById(R.id.name);
 
         user_name.setText(list.get(position).name);
+        user_name.setImeOptions(list.get(position).Id);
 
         TextView user_sex= view.findViewById(R.id.sex);
         user_sex.setText(list.get(position).sex);
@@ -93,15 +98,17 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         user_age.setText( new Integer (list.get(position).age).toString() );
 
         //Handle buttons and add onClickListeners
-//        Button callbtn= (Button)view.findViewById(R.id.btn);
-//
-//        callbtn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                do something
-//
-//            }
-//        });
+        final Button callbtn= (Button)view.findViewById(R.id.name);
+
+        callbtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Integer userId = callbtn.getImeOptions();
+                Intent profileIntent = new Intent(context, UserInfoActivity.class);
+                profileIntent.putExtra("userId", userId);
+                context.startActivity(profileIntent);
+            }
+        });
 
         return view;
     }
@@ -113,6 +120,7 @@ public class PeopleActivity extends AppCompatActivity {
     String my_name;
     String my_sex;
     int my_age;
+    int my_id;
     ArrayList<Person> mArrData = new ArrayList<>();
     int dineMatesCounter=0;
 
@@ -133,10 +141,6 @@ public class PeopleActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         if (id==android.R.id.home) {
             finish();
         }
@@ -154,14 +158,18 @@ public class PeopleActivity extends AppCompatActivity {
                 String getDishSql = String.format("SELECT * FROM daj_ziomkow(%s)", userId);
                 Log.i("ziomek",getDishSql);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
+                ResultSetMetaData rsmd = getDishResult.getMetaData();
+                String name = rsmd.getColumnName(1);
+                Log.i("kol",name);
 
                 while (getDishResult.next()) {
                     dineMatesCounter++;
                     my_name = getDishResult.getString("nick");
                     my_age = getDishResult.getInt("age");
                     my_sex = getDishResult.getString("gender");
+                    my_id = getDishResult.getInt("so_id");
 
-                    mArrData.add(new Person(my_name,my_sex,my_age));
+                    mArrData.add(new Person(my_name,my_sex,my_age, my_id));
                 }
                 if(dineMatesCounter > 0 )
                     return true;
@@ -175,14 +183,6 @@ public class PeopleActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-//            TextView name_1 = findViewById(R.id.name_1);
-//            name_1.setText(sname_1);
-//            LinearLayout schowaj = findViewById(R.id.person1);
-//            schowaj.setVisibility(View.GONE);
-//            TextView sex_1 = findViewById(R.id.sex_1);
-//            sex_1.setText(getDishResult.getInt("age"));
-//            TextView age_1 = findViewById(R.id.age_1);
-//            age_1.setText(getDishResult.getString("gender"));
 
             if( success) {
                 ListView listView = findViewById(R.id.lista);
