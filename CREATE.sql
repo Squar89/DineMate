@@ -1,48 +1,70 @@
-create table users
+CREATE TABLE IF NOT EXISTS users
 (
-  user_id              integer     not null
-    constraint users_pkey
-    primary key,
-  login                varchar(30) not null
-    constraint users_login_key
-    unique,
-  password_hash        varchar(30) not null,
-  date_of_registration timestamp   not null
+  user_id SERIAL PRIMARY KEY,
+  login VARCHAR(30) UNIQUE NOT NULL,
+  password_hash VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  year_of_birth INTEGER NOT NULL,
+  sex VARCHAR(30) NOT NULL,
+  contact VARCHAR(30) NOT NULL,
+  description VARCHAR(256) NOT NULL
 );
 
-create table loggings
+CREATE TABLE IF NOT EXISTS dishes
 (
-  user_id integer
-    constraint loggings_user_id_fkey
-    references users,
-  date    timestamp not null
+  dish_id VARCHAR(10) PRIMARY KEY,
+  description TEXT,
+  name  TEXT,
+  ingredients_list TEXT,
+  directions TEXT,
+  image_url TEXT,
+  publisher_url TEXT
 );
 
-create table dishes
+CREATE TABLE IF NOT EXISTS ratings
 (
-  dish_id       varchar(10) not null
-    constraint dishes_pkey
-    primary key,
-  name          text,
-  ingredients   text,
-  directions    text,
-  image_url     text,
-  publisher_url text
+  user_id INTEGER REFERENCES users,
+  dish_id VARCHAR(10) REFERENCES dishes,
+  date TIMESTAMP NOT NULL DEFAULT now(),
+  rate INTEGER,
+  PRIMARY KEY (user_id, dish_id)
 );
 
-create table ratings
-(
-  user_id integer     not null
-    constraint ratings_user_id_fkey
-    references users,
-  dish_id varchar(10) not null
-    constraint ratings_dish_id_fkey
-    references dishes,
-  rate    numeric
-    constraint ratings_rate_check
-    check ((rate > (0) :: numeric) AND (rate < (6) :: numeric)),
-  date    timestamp   not null,
-  constraint ratings_pkey
-  primary key (user_id, dish_id)
-);
+
+
+
+CREATE OR REPLACE FUNCTION daj_ziomkow( my_id INTEGER)
+  RETURNS TABLE (so_id INTEGER,nick VARCHAR(30),age INTEGER, gender VARCHAR(30)) AS
+$$
+BEGIN
+  RETURN QUERY
+  SELECT user_id,name, CAST( EXTRACT(YEAR FROM now() )-year_of_birth AS INTEGER ) AS age,sex
+  FROM users RIGHT JOIN (
+                          SELECT
+                            CAST( SUM(2 - ABS(oceny.moje - oceny.jego) ) AS INTEGER) AS suma,
+                            jego_id
+                          FROM
+                            (
+                              SELECT
+                                my.rate      AS moje,
+                                they.rate    AS jego,
+                                they.user_id AS jego_id
+                              FROM ratings AS my LEFT JOIN
+                                (SELECT *
+                                 FROM ratings) AS they ON
+                                                         my.dish_id = they.dish_id
+                              WHERE my.user_id = my_id AND they.user_id <> my_id
+                                    AND my.rate IS NOT NULL
+                                    AND they.rate IS NOT NULL
+                            ) AS oceny
+                          GROUP BY oceny.jego_id
+                          ORDER BY suma  DESC
+                          LIMIT 10
+                        ) AS podobni ON user_id=jego_id;
+END;
+$$
+LANGUAGE  plpgsql;
+
+
+
 
