@@ -3,7 +3,6 @@ package com.example.dinemate;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.util.TimeUnit;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -22,13 +21,12 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class RecommendActivity extends BaseDrawerActivity {
 
@@ -176,13 +174,21 @@ public class RecommendActivity extends BaseDrawerActivity {
             prepareRecipeSucces = false;
             icon = null;
             try (Connection dbConnection = AppUtils.getConnection()) {
-                Statement dbStatement = dbConnection.createStatement();
-                String getDishSql = String.format("SELECT * FROM " +
-                        "((SELECT * FROM dishes EXCEPT (SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s)) " +
+                String getDishSql = "SELECT * FROM " +
+                        "((SELECT * FROM dishes EXCEPT (SELECT dishes.* FROM ratings " +
+                        "INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = ?)) " +
                         "UNION " +
-                        "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id WHERE ratings.user_id = %s AND ratings.rate = 0 AND ratings.date < NOW() - INTERVAL '7 days')) AS dishes " +
-                        "ORDER BY RANDOM() LIMIT 1", userId, userId);
-                ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
+                        "(SELECT dishes.* FROM ratings INNER JOIN dishes ON ratings.dish_id = dishes.dish_id " +
+                        "WHERE ratings.user_id = ? AND ratings.rate = 0 AND ratings.date < NOW() - INTERVAL '7 days')) " +
+                        "AS dishes " +
+                        "ORDER BY RANDOM() LIMIT 1";
+
+                PreparedStatement dbStatement = dbConnection.prepareStatement(getDishSql);
+
+                dbStatement.setInt(1, userId);
+                dbStatement.setInt(2, userId);
+
+                ResultSet getDishResult = dbStatement.executeQuery();
 
                 if (getDishResult.next()) {
                     recipeId = getDishResult.getString("dish_id");
@@ -241,13 +247,19 @@ public class RecommendActivity extends BaseDrawerActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try (Connection dbConnection = AppUtils.getConnection()) {
-                Statement dbStatement = dbConnection.createStatement();
-                String upsertRatingSql = String.format("INSERT INTO ratings (user_id, dish_id, rate) " +
-                        "VALUES (%d, '%s', %d) " +
+                String updateRatingSql = "INSERT INTO ratings (user_id, dish_id, rate) " +
+                        "VALUES (?, ?, ?) " +
                         "ON CONFLICT (user_id, dish_id) DO UPDATE " +
                         "  SET rate = excluded.rate, " +
-                        "      date = NOW()", mUserId, mRecipeId, mRating);
-                dbStatement.executeUpdate(upsertRatingSql);
+                        "      date = NOW()";
+                PreparedStatement dbStatement = dbConnection.prepareStatement(updateRatingSql);
+
+                dbStatement.setInt(1, mUserId);
+                dbStatement.setString(2, mRecipeId);
+                dbStatement.setInt(3, mRating);
+
+                dbStatement.executeUpdate();
+
                 return true;
             } catch (SQLException | URISyntaxException e) {
                 Log.i("connection", e.toString());
