@@ -2,7 +2,6 @@ package com.example.dinemate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,41 +12,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 class Dish{
     String name;
     Integer rating;
-    String dishId;
     String description;
     String ingredients;
     String image_url;
-    Dish(String name,Integer rating, String dishId, String description,
+    Dish(String name,Integer rating, String description,
          String ingredients, String image_url){
         this.name = name;
         this.rating = rating;
-        this.dishId = dishId;
         this.description = description;
         this.ingredients = ingredients;
         this.image_url = image_url;
@@ -58,7 +45,7 @@ class MyDishListAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<Dish> list;
     private Context context;
 
-    public MyDishListAdapter(ArrayList<Dish> list, Context context) {
+    MyDishListAdapter(ArrayList<Dish> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -122,7 +109,6 @@ public class RatedActivity extends AppCompatActivity {
     String my_url;
     String my_ingredients;
     int my_rating;
-    String my_id;
     int userId;
     ArrayList<Dish> mArrData = new ArrayList<>();
     int dishesCounter=0;
@@ -160,26 +146,23 @@ public class RatedActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             try (Connection dbConnection = AppUtils.getConnection()) {
                 Statement dbStatement = dbConnection.createStatement();
-                String getDishSql = String.format("SELECT * FROM ratings r JOIN dishes d ON d.dish_id = " +
-                        "r.dish_id where user_id = (%s) ", userId);
+                String getDishSql = String.format("SELECT * FROM ratings r JOIN " +
+                        "dishes d ON d.dish_id = " + "r.dish_id where user_id = (%s) ", userId);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
 
                 while (getDishResult.next()) {
                     dishesCounter++;
                     my_name = getDishResult.getString("name");
-                    my_id = getDishResult.getString("dish_id");
                     my_rating = getDishResult.getInt("rate");
                     my_ingredients = getDishResult.getString("ingredients");
                     my_description = getDishResult.getString("directions");
                     my_url = getDishResult.getString("image_url");
 
-                    mArrData.add(new Dish(my_name,my_rating,my_id,my_description,my_ingredients,my_url));
+                    mArrData.add(new Dish(my_name,my_rating,my_description,my_ingredients,my_url));
                 }
-                if(dishesCounter > 0 )
-                    return true;
-                return false;
+                return (dishesCounter > 0);
             } catch (SQLException | URISyntaxException e) {
-                Log.i("connection", e.toString());
+                Log.e("DB exception", e.toString());
             }
 
             return false;

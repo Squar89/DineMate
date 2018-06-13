@@ -2,7 +2,6 @@ package com.example.dinemate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,27 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 class Person{
@@ -52,7 +41,7 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<Person> list;
     private Context context;
 
-    public MyCustomAdapter(ArrayList<Person> list, Context context) {
+    MyCustomAdapter(ArrayList<Person> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -69,9 +58,7 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public long getItemId(int pos) {
-//        return list.get(pos).getId();
-        //just return 0 if your list items do not have an Id variable.\
-        return 0;
+        return list.get(pos).Id;
     }
 
 
@@ -83,21 +70,14 @@ class MyCustomAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.content_itemlist, null);
         }
 
-        //Handle TextView and display string from your list
-        Button user_name= view.findViewById(R.id.name);
-
-        user_name.setText(list.get(position).name);
-
         TextView user_sex= view.findViewById(R.id.sex);
         user_sex.setText(list.get(position).sex);
 
         TextView user_age= view.findViewById(R.id.age);
+        user_age.setText( Integer.valueOf(list.get(position).age).toString() );
 
-
-        user_age.setText( new Integer (list.get(position).age).toString() );
-
-        //Handle buttons and add onClickListeners
         final Button callbtn= (Button)view.findViewById(R.id.name);
+        callbtn.setText(list.get(position).name);
 
         callbtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -122,9 +102,8 @@ public class PeopleActivity extends AppCompatActivity {
     int my_id;
     ArrayList<Person> mArrData = new ArrayList<>();
     int dineMatesCounter=0;
-
-    ListView simpleList;
     int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,11 +134,7 @@ public class PeopleActivity extends AppCompatActivity {
             try (Connection dbConnection = AppUtils.getConnection()) {
                 Statement dbStatement = dbConnection.createStatement();
                 String getDishSql = String.format("SELECT * FROM daj_ziomkow(%s)", userId);
-                Log.i("ziomek",getDishSql);
                 ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
-                ResultSetMetaData rsmd = getDishResult.getMetaData();
-                String name = rsmd.getColumnName(1);
-                Log.i("kol",name);
 
                 while (getDishResult.next()) {
                     dineMatesCounter++;
@@ -170,11 +145,9 @@ public class PeopleActivity extends AppCompatActivity {
 
                     mArrData.add(new Person(my_name,my_sex,my_age, my_id));
                 }
-                if(dineMatesCounter > 0 )
-                    return true;
-                return false;
+                return (dineMatesCounter > 0);
             } catch (SQLException | URISyntaxException e) {
-                Log.i("connection", e.toString());
+                Log.e("DB exception", e.toString());
             }
 
             return false;

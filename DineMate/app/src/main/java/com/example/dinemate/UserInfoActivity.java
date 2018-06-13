@@ -21,12 +21,6 @@ public class UserInfoActivity extends AppCompatActivity {
     private String description;
     private Integer age;
 
-    private TextView nameView;
-    private TextView genderView;
-    private TextView contact_dataView;
-    private TextView descriptionView;
-    private TextView ageView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +70,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 return false;
 
             } catch (Exception e){
-                Log.i("exception", e.toString());
+                Log.e("DB exception", e.toString());
                 return false;
             }
         }
@@ -85,11 +79,11 @@ public class UserInfoActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
 
             if (success) {
-                nameView = findViewById(R.id.username);
-                ageView = findViewById(R.id.user_age);
-                genderView = findViewById(R.id.user_sex);
-                contact_dataView = findViewById(R.id.user_contact);
-                descriptionView = findViewById(R.id.user_description);
+                TextView nameView = findViewById(R.id.username);
+                TextView ageView = findViewById(R.id.user_age);
+                TextView genderView = findViewById(R.id.user_sex);
+                TextView contact_dataView = findViewById(R.id.user_contact);
+                TextView descriptionView = findViewById(R.id.user_description);
 
                 nameView.setText(name);
                 ageView.append(age.toString());

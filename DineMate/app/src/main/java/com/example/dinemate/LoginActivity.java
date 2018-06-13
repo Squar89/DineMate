@@ -4,16 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,13 +22,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.*;
 
 
@@ -134,19 +123,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        /*
-        // Check for a valid username.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
-            cancel = true;
-        } else if (!isUsernameValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mUsernameView;
-            cancel = true;
-        }
-        */
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -231,7 +207,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private interface ProfileQuery {
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -252,25 +227,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                Log.i("getConnection", "cos dziala");
                 Connection connection = AppUtils.getConnection();
 
-                Log.i("createStatement", "cos dziala");
                 Statement stmt = connection.createStatement();
                 String query = "SELECT user_id FROM users WHERE login='" + mUsername +
                         "'AND  password_hash='" + mPassword +"';";
-                Log.i("query", query);
                 ResultSet resultSet = stmt.executeQuery(query);
 
-                Log.i("userID_przed", "USER_ID:" + userId);
                 if( resultSet.next()){
                     userId = resultSet.getInt("user_id");
-                    Log.i("userID_po", "USER_ID:" + userId);
                     return true;
                 }
 
             } catch (Exception e){
-                Log.i("exception", e.toString());
+                Log.e("DB exception", e.toString());
                 return false;
             }
 

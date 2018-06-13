@@ -3,15 +3,10 @@ package com.example.dinemate;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +23,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -292,7 +286,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private interface ProfileQuery {
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     private Boolean checkUsername(String userName){
@@ -302,7 +295,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             Statement stmt = connection.createStatement();
             String query = "SELECT * FROM users WHERE login='" + userName + "';";
-            Log.i("query", query);
 
             ResultSet resultSet = stmt.executeQuery(query);
             if( !resultSet.next() )
@@ -310,7 +302,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 mUsernameView.requestFocus();
                 return false;
         } catch (Exception e){
-            Log.i("connectionFail", e.toString());
+            Log.e("DB exception", e.toString());
             AppUtils.DisplayDialog(RegisterActivity.this, "Error",
                     "Can't connect to a server, try again later");
             return false;
@@ -355,7 +347,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
                 Statement stmt = connection.createStatement();
                 String query = "SELECT * FROM users WHERE login='" + mUsername + "';";
-                Log.i("query", query);
 
                 ResultSet resultSet = stmt.executeQuery(query);
                 if( resultSet.next() ) {
@@ -363,7 +354,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                     return false;
                 }
             } catch (Exception e){
-                Log.i("connectionFail", e.toString());
+                Log.e("DB exception", e.toString());
                 errorType = ERR_CON;
                 return false;
             }
@@ -384,12 +375,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                         "'" + mDescription  + "'" +
                          ");";
 
-                Log.i("query", query);
-
                 stmt.execute(query);
                     return true;
             } catch (Exception e){
-                Log.i("connectionFail", e.toString());
+                Log.e("BD exception", e.toString());
                 errorType = ERR_CON;
                 return false;
             }
@@ -407,7 +396,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 mUsernameView.setError(getString(R.string.username_taken));
                 mUsernameView.requestFocus();
             } else if (errorType.equals(ERR_CON)) {
-                Log.i("connectionFail", "failed :(");
                 AppUtils.DisplayDialog(RegisterActivity.this, "Error",
                         "Can't connect to a server, try again later");
             }

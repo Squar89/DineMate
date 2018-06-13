@@ -8,22 +8,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
     Bitmap icon = null;
@@ -51,7 +43,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     }
 
     public class GetImageFromUrl extends AsyncTask<Void, Void, Boolean> {
-        private boolean everythingRated = false;
         GetImageFromUrl() {}
 
         @Override
@@ -64,7 +55,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 return true;
 
             } catch ( IOException e) {
-                Log.i("connection", e.toString());
+                Log.e("connection", e.toString());
             }
 
             return false;

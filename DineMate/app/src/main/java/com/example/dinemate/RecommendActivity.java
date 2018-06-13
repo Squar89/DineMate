@@ -131,7 +131,6 @@ public class RecommendActivity extends BaseDrawerActivity {
 
     public void showRecipe(View view) {
         Intent showDetailsIntent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
-        showDetailsIntent.putExtra("userId", userId);
         showDetailsIntent.putExtra("recipeId", recipeId);
         showDetailsIntent.putExtra("recipeName", recipeName);
         showDetailsIntent.putExtra("recipeIngredients", recipeIngredients);
@@ -146,18 +145,13 @@ public class RecommendActivity extends BaseDrawerActivity {
             dishName = findViewById(R.id.dish_name);
             dishName.setText(recipeName);
 
-
-            Log.i("OBRAZEK:",recipeImageUrl);
             dishImage = findViewById(R.id.dish_image);
             dishImage.setImageBitmap(icon);
 
-            Log.i("OBRAZEK2:",recipeImageUrl);
             ratingBar.setRating(0);
 
         } catch ( Exception e) {
-
-            Log.i("wyjatek",e.toString());
-            // TODO blad
+            Log.e("Image",e.toString());
         }
 
     }
@@ -208,7 +202,7 @@ public class RecommendActivity extends BaseDrawerActivity {
                 }
 
             } catch (SQLException | URISyntaxException | IOException e) {
-                Log.i("connection", e.toString());
+                Log.e("DB exception", e.toString());
             }
 
             return false;
