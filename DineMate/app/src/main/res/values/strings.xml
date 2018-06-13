@@ -18,7 +18,7 @@
 
     <!-- Strings related to registration -->
     <string name="user_nickname">Name</string>
-    <string name="user_contact">Concact Data</string>
+    <string name="user_contact">Contact Data</string>
     <string name="user_age">Age</string>
     <string name="user_sex">Sex</string>
     <string name="user_description">Description</string>
