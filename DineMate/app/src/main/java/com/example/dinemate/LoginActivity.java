@@ -258,8 +258,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(succesfullLoginIntent);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                AppUtils.DisplayDialog(LoginActivity.this, "Error",
+                        "Log in unsuccessful, try again.");
             }
         }
 
