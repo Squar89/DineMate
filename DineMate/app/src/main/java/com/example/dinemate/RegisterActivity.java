@@ -25,8 +25,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -286,28 +286,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private interface ProfileQuery {
         int ADDRESS = 0;
-    }
-
-    private Boolean checkUsername(String userName){
-
-        try {
-            Connection connection = AppUtils.getConnection();
-
-            Statement stmt = connection.createStatement();
-            String query = "SELECT * FROM users WHERE login='" + userName + "';";
-
-            ResultSet resultSet = stmt.executeQuery(query);
-            if( !resultSet.next() )
-                mUsernameView.setError(getString(R.string.username_taken));
-                mUsernameView.requestFocus();
-                return false;
-        } catch (Exception e){
-            Log.e("DB exception", e.toString());
-            AppUtils.DisplayDialog(RegisterActivity.this, "Error",
-                    "Can't connect to a server, try again later");
-            return false;
-        }
-
+        int IS_PRIMARY = 1;
     }
 
     /**
@@ -322,7 +301,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mUsername;
         private final String mPassword;
         private final String mName;
-        private final int mAge;
+        private final int mBirthYear;
         private final String mGender;
         private final String mContactForm;
         private final String mDescription;
@@ -333,7 +312,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mUsername = username;
             mPassword = password;
             mName = nickname;
-            mAge = age;
+            mBirthYear = 2018 - age;
             mGender = gender;
             mContactForm = contactForm;
             mDescription = description;
@@ -345,10 +324,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 Connection connection = AppUtils.getConnection();
 
-                Statement stmt = connection.createStatement();
-                String query = "SELECT * FROM users WHERE login='" + mUsername + "';";
+                String query = "SELECT * FROM users WHERE login=?;";
+                PreparedStatement stmt = connection.prepareStatement(query);
 
-                ResultSet resultSet = stmt.executeQuery(query);
+                stmt.setString(1, mUsername);
+
+                ResultSet resultSet = stmt.executeQuery();
                 if( resultSet.next() ) {
                     errorType = ERR_USR;
                     return false;
@@ -362,21 +343,19 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 Connection connection = AppUtils.getConnection();
 
-                Statement stmt = connection.createStatement();
-                int birthYear = 2018-mAge;
-                String query = "INSERT INTO users VALUES(" +
-                        "DEFAULT," +
-                        "'" + mUsername  + "'," +
-                        "'" + mPassword  + "'," +
-                        "'" + mName  + "'," +
-                        + birthYear + "," +
-                        "'" + mGender  + "'," +
-                        "'" + mContactForm  + "'," +
-                        "'" + mDescription  + "'" +
-                         ");";
+                String query = "INSERT INTO users VALUES(DEFAULT,?,?,?,?,?,?,?);";
+                PreparedStatement stmt = connection.prepareStatement(query);
 
-                stmt.execute(query);
-                    return true;
+                stmt.setString(1, mUsername);
+                stmt.setString(2, mPassword);
+                stmt.setString(3, mName);
+                stmt.setInt(4, mBirthYear);
+                stmt.setString(5, mGender);
+                stmt.setString(6, mContactForm);
+                stmt.setString(7, mDescription);
+
+                stmt.execute();
+                return true;
             } catch (Exception e){
                 Log.e("BD exception", e.toString());
                 errorType = ERR_CON;

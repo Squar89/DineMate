@@ -14,15 +14,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ListView;
 
 import java.net.URISyntaxException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import android.widget.ListView;
 
 class Person{
     String name;
@@ -132,9 +132,15 @@ public class PeopleActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try (Connection dbConnection = AppUtils.getConnection()) {
-                Statement dbStatement = dbConnection.createStatement();
-                String getDishSql = String.format("SELECT * FROM daj_ziomkow(%s)", userId);
-                ResultSet getDishResult = dbStatement.executeQuery(getDishSql);
+                String getDishSql = "SELECT * FROM daj_ziomkow(?)";
+                PreparedStatement dbStatement = dbConnection.prepareStatement(getDishSql);
+
+                dbStatement.setInt(1, userId);
+
+                ResultSet getDishResult = dbStatement.executeQuery();
+                ResultSetMetaData rsmd = getDishResult.getMetaData();
+                String name = rsmd.getColumnName(1);
+
 
                 while (getDishResult.next()) {
                     dineMatesCounter++;

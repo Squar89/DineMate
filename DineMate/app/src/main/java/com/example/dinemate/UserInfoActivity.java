@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Calendar;
 
 public class UserInfoActivity extends AppCompatActivity {
@@ -52,10 +52,13 @@ public class UserInfoActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 Connection connection = AppUtils.getConnection();
-                Statement stmt = connection.createStatement();
-                String query = "SELECT * FROM users WHERE user_id='" + userId + "';";
-                ResultSet resultSet = stmt.executeQuery(query);
 
+                String query = "SELECT * FROM users WHERE user_id=?;";
+                PreparedStatement stmt = connection.prepareStatement(query);
+
+                stmt.setInt(1, userId);
+
+                ResultSet resultSet = stmt.executeQuery();
                 if(resultSet.next()){
                     Log.i("maa","ceedenia");
                     int year = Calendar.getInstance().get(Calendar.YEAR);

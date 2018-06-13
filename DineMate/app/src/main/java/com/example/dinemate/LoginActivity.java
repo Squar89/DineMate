@@ -22,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
@@ -207,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private interface ProfileQuery {
         int ADDRESS = 0;
+        int IS_PRIMARY = 1;
     }
 
     /**
@@ -229,12 +231,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 Connection connection = AppUtils.getConnection();
 
-                Statement stmt = connection.createStatement();
-                String query = "SELECT user_id FROM users WHERE login='" + mUsername +
-                        "'AND  password_hash='" + mPassword +"';";
-                ResultSet resultSet = stmt.executeQuery(query);
+                String query = "SELECT user_id FROM users WHERE login=? AND  password_hash=?;";
+                PreparedStatement stmt = connection.prepareStatement(query);
 
-                if( resultSet.next()){
+                stmt.setString(1, mUsername);
+                stmt.setString(2, mPassword);
+
+                ResultSet resultSet = stmt.executeQuery();
+                if(resultSet.next()){
                     userId = resultSet.getInt("user_id");
                     return true;
                 }
@@ -258,8 +262,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(succesfullLoginIntent);
                 finish();
             } else {
-                AppUtils.DisplayDialog(LoginActivity.this, "Error",
-                        "Log in unsuccessful, try again.");
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
             }
         }
 
